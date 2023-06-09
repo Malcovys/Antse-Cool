@@ -1,11 +1,14 @@
 <?php
 
 require_once('src/controllers/migrations/group.php');
+require_once('src/controllers/migrations/profs.php');
+
 
 try{ 
 
-    createGroup(); 
-    
+    createProfs(); 
+    echo 'Done';
+
 } catch(Exception $e) {
 
     die('Error : '.$e);
