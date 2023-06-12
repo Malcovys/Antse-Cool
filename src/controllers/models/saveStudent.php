@@ -1,7 +1,7 @@
 <?php
 
 require_once('src/lib/database.php');
-require_once('src/models/Student.php');
+require_once('src/models/student.php');
 
 function saveStudent(array $infos) {
     
