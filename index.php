@@ -1,9 +1,9 @@
 <?php
 
-require_once('src/controllers/pages/homepage.php');
-require_once('src/controllers/pages/singuppage.php');
-require_once('src/controllers/pages/loginpage.php');
-require_once('src/controllers/models/saveStudent.php');
+require_once('src/controllers/student/pages/homepage.php');
+require_once('src/controllers/student/pages/singuppage.php');
+require_once('src/controllers/student/pages/loginpage.php');
+require_once('src/controllers/student/models/saveStudent.php');
 
 
 
