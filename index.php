@@ -4,6 +4,7 @@ require_once('src/controllers/student/pages/homepage.php');
 require_once('src/controllers/student/pages/singuppage.php');
 require_once('src/controllers/student/pages/loginpage.php');
 require_once('src/controllers/student/models/saveStudent.php');
+require_once('src/controllers/student/models/auth.php');
 
 
 
@@ -45,15 +46,15 @@ try {
             }
         }
 
-        elseif ($_GET['action'] === 'login') {
-            loginPage();
+        elseif ($_GET['action'] === 'create') {
+            singuppage();
         }
 
         elseif ($_GET['action'] === 'auth') {
             if (isset($_POST['email']) && $_POST['email'] !== '') {
                 if (isset($_POST['password']) && $_POST['password'] !== '') {
 
-                    print_r($_POST);
+                    auth($_POST);
                     
                 } else {
                     throw new Exception('Password required');
@@ -65,7 +66,7 @@ try {
 
     } else {
 
-        singupPage();
+        loginPage();
     }
 
 } catch(Exception $e) {
