@@ -1,7 +1,7 @@
 <?php
 
 require_once('src/controllers/pages/homepage.php');
-require_once('src/controllers/pages/registerpage.php');
+require_once('src/controllers/pages/singuppage.php');
 require_once('src/controllers/models/saveStudent.php');
 
 
@@ -10,7 +10,7 @@ try {
 
     if (isset($_GET['action']) && $_GET['action'] !== '') {
         
-        if ($_GET['action'] === 'register') {
+        if ($_GET['action'] === 'singup') {
            
             if (isset($_POST['first_name']) && $_POST['first_name'] !== '') {
 
@@ -59,7 +59,7 @@ try {
 
     } else {
 
-        registerpage();
+        singupPage();
     }
 
 } catch(Exception $e) {
