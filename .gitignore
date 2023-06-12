@@ -1,1 +1,12 @@
 src/lib/database.php
+Profesor/
+Student/
+templates/css/
+templates/fonts/
+templates/images/
+templates/js/
+templates/scss/
+templates/vendors/
+templates/pages/forms/
+templates/pages/samples/
+templates/pages/tables/
