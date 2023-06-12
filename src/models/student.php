@@ -45,6 +45,20 @@ class StudentRepository
 
     }
 
+    public function getGroupName(string $groupID): string {
+
+        $SQLquery = "SELECT `group_name` FROM `groups` WHERE `group_id` = :group_id";
+
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute([
+            'group_id' => $groupID
+        ]);
+
+        $group_name = $statement->fetchColumn();
+
+        return $group_name;
+    }
+
     public function savePassword(string $password): void {
 
         $SQLquery = "INSERT INTO `passwords` (`password`) VALUES (:password)";
@@ -56,7 +70,7 @@ class StudentRepository
 
     }
 
-    protected function getPasswordID(string $password): string {
+    protected function getPasswordID(string $password): int {
 
         $SQLquery = "SELECT password_id FROM `passwords` WHERE `password` = :password";
 
@@ -68,6 +82,24 @@ class StudentRepository
         $passwordID = $statement->fetchColumn();
 
         return $passwordID;
+
+    }
+
+    public function auth(array $infos): array {
+
+        $password_id = $this->getPasswordID($infos['password']);
+
+        $SQLquery = "SELECT * FROM `students` WHERE `student_email` = :email AND `password_id` = :password_id";
+
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute(([
+            'email' => htmlspecialchars($infos['email']),
+            'password_id' => $password_id
+        ]));
+
+        $loggetStudent = $statement->fetch();
+
+        return $loggetStudent;
 
     }
 
