@@ -2,6 +2,6 @@
 
 function singuppage() {
 
-    require_once('templates/pages/registerpage.php');
+    require_once('templates/pages/singuppage.php');
 
 }

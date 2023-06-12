@@ -1,6 +1,6 @@
 <?php
 
-function singinPage() {
+function loginPage() {
     
     require('templates/pages/loginpage.php');
 
