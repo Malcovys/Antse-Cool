@@ -2,7 +2,7 @@
 
 require_once('src/controllers/pages/homepage.php');
 require_once('src/controllers/pages/singuppage.php');
-require_once('src/controllers/pages/singinpage.php');
+require_once('src/controllers/pages/loginpage.php');
 require_once('src/controllers/models/saveStudent.php');
 
 
@@ -46,7 +46,21 @@ try {
         }
 
         elseif ($_GET['action'] === 'login') {
-            singinPage();
+            loginPage();
+        }
+
+        elseif ($_GET['action'] === 'auth') {
+            if (isset($_POST['email']) && $_POST['email'] !== '') {
+                if (isset($_POST['password']) && $_POST['password'] !== '') {
+
+                    print_r($_POST);
+                    
+                } else {
+                    throw new Exception('Password required');
+                }
+            } else {
+                throw new Exception('E-mail required');
+            }
         }
 
     } else {
