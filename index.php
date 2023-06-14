@@ -1,12 +1,16 @@
 <?php
+namespace Applcation\Router;
 
-require_once('src/controllers/student/pages/homepage.php');
-require_once('src/controllers/student/pages/singuppage.php');
-require_once('src/controllers/student/pages/loginpage.php');
-require_once('src/controllers/student/models/saveStudent.php');
-require_once('src/controllers/student/models/auth.php');
+use App\Controllers\StudentControllers;
+use \App\Controllers\UserControllers;
+
+require_once('App/Autoloader.php');
+\App\Autoloader::register();
+
+session_start();
 
 
+// require_once 'Src/Controllers/StudentControllers.php';
 
 try { 
 
@@ -20,57 +24,76 @@ try {
                             if (isset($_POST['group']) && $_POST['group'] !== '') {
                                 if (isset($_POST['promotion']) && $_POST['promotion'] !== '') {
                                     if (isset($_POST['password']) && $_POST['password'] !== '') {
-                                        
-                                        saveStudent($_POST);
+
+                                        $student = new UserControllers;
+                                        $student->save($_POST);
+                                        header('Location: index.php');
+                                        exit();
 
                                     } else {
-                                        throw new Exception('Password is required.');
+                                        throw new \Exception('Password is required.');
                                     }
                                 } else {
-                                    throw new Exception('Promotion is empty.');
+                                    throw new \Exception('Promotion is empty.');
                                 }
                             } else {
-                                throw new Exception('Group is required.');
+                                throw new \Exception('Group is required.');
                             }
                         } else {
-                            throw new Exception('E-mail is required.');
+                            throw new \Exception('E-mail is required.');
                         }
                     } else {
-                        throw new Exception('Your matricul is empty.');
+                        throw new \Exception('Your matricul is empty.');
                     }
                 } else {
-                    throw new Exception('What is your last name ?');
+                    throw new \Exception('What is your last name ?');
                 }
             } else {
-                throw new Exception('Your first name please');
+                throw new \Exception('Your first name please');
             }
         }
 
         elseif ($_GET['action'] === 'create') {
-            singuppage();
+
+            UserControllers::singuppage();
         }
 
         elseif ($_GET['action'] === 'auth') {
             if (isset($_POST['email']) && $_POST['email'] !== '') {
                 if (isset($_POST['password']) && $_POST['password'] !== '') {
 
-                    auth($_POST);
+                    $user = new UserControllers();
+                    $auth = $user->auth($_POST);
+
+                    if ($auth) {
+                        if (isset($_POST['student']) && $_POST['student'] === 'on') {
+                            header('Location: index.php?action=strudent-home');
+                            exit();
+                        } else {
+                            echo 'Prof';
+                        }   
+                    }
                     
                 } else {
-                    throw new Exception('Password required');
+                    throw new \Exception('Password required');
                 }
             } else {
-                throw new Exception('E-mail required');
+                throw new \Exception('E-mail required');
             }
+        }
+
+        elseif ($_GET['action'] === 'strudent-home') {
+            
+            StudentControllers::homepage();
         }
 
     } else {
 
-        loginPage();
+        UserControllers::loginPage();
     }
 
-} catch(Exception $e) {
+} catch(\Throwable $e) {
 
-    die('Error : '.$e);
+    die('Error : '.$e->getMessage());
 
 }
