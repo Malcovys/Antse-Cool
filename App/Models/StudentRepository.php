@@ -49,7 +49,7 @@ class StudentRepository
 
     }
 
-    protected function getPasswordID(string $password): int {
+    protected function getPasswordID(string $password) {
 
         $SQLquery = "SELECT `id` FROM `passwords` WHERE `password` = :password";
 
@@ -64,7 +64,7 @@ class StudentRepository
 
     }
 ######## User #######
-    public function auth(array $infos): array {
+    public function auth(array $infos) {
 
         $password_id = $this->getPasswordID($infos['password']);
 
