@@ -5,17 +5,19 @@ namespace App\Controllers;
 use \App\Lib\DatabaseConnection;
 use \App\Models\Student;
 use \App\Models\StudentRepository;
-
+use \App\Controllers\UserControllers;
 
 class StudentControllers
 {
     ##### Pages #####
     public static function homepage() {
+        $email = $_COOKIE[UserControllers::$cookie_email];
+        $lastName = self::getStudentLastName($email);
         require('templates/pages/student/homepage.php');
     }
     
     public static function singuppage() {
-        require_once('templates/pages/singuppage.php');
+        require('templates/pages/singuppage.php');
     }
 
     ##### Trairements #####
@@ -23,14 +25,21 @@ class StudentControllers
         $studentRepository = new StudentRepository();
         $studentRepository->connection = new DatabaseConnection();
         $loggetStudent = $studentRepository->auth($infos);
-       
         return $loggetStudent;
+    }
+
+    public static function getStudentLastName(string $email) {
+        $studentRepository = new StudentRepository();
+        $studentRepository->connection = new DatabaseConnection();
+        $name = $studentRepository->getLastName($email);
+        return $name;
     }
 
     protected function getGroup(int $id) {
         $studentRepository = new StudentRepository();
         $studentRepository->connection = new DatabaseConnection();
-        $studentRepository->getGroupName($id);
+        $group = $studentRepository->getGroupName($id);
+        return $group;
     }
     
     public function save(array $infos) {
@@ -41,10 +50,8 @@ class StudentControllers
         $group = htmlspecialchars($infos['group']);
         $promotion = htmlspecialchars($infos['promotion']);
         $password = htmlspecialchars($infos['password']);
-    
         $studentRepository = new StudentRepository();
         $studentRepository->connection = new DatabaseConnection();
-
         $student = new Student($matricul, $first_name, $last_name, $email, $group, $promotion, $password);
         $studentRepository->save($student);
     }

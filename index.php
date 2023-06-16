@@ -3,6 +3,7 @@ namespace Applcation\Router;
 
 use App\Controllers\StudentControllers;
 use \App\Controllers\UserControllers;
+use \App\Controllers\ProfControllers;
 
 require_once('App/Autoloader.php');
 \App\Autoloader::register();
@@ -13,12 +14,12 @@ session_start();
 try { 
     if (isset($_GET['action']) && $_GET['action'] !== '') {
         if ($_GET['action'] === 'singup') {
-            if (isset($_POST['first_name']) && $_POST['first_name'] !== '') {
-                if (isset($_POST['last_name']) && $_POST['last_name'] !== '') {
-                    if (isset($_POST['id']) && $_POST['id'] !== '') {
-                        if (isset($_POST['email']) && $_POST['email'] !== '') {
-                            if (isset($_POST['group']) && $_POST['group'] !== '') {
-                                if (isset($_POST['promotion']) && $_POST['promotion'] !== '') {
+            if (!empty($_POST['first_name'])) {
+                if (!empty($_POST['last_name'])) {
+                    if (!empty($_POST['id'])) {
+                        if (!empty($_POST['email'])) {
+                            if (!empty($_POST['group']) ) {
+                                if (!empty($_POST['promotion'])) {
                                     if (isset($_POST['password']) && $_POST['password'] !== '') {
                                         $student = new UserControllers;
                                         $student->save($_POST);
@@ -48,32 +49,36 @@ try {
         }
 
         elseif ($_GET['action'] === 'create') {
-
             UserControllers::singuppage();
         }
 
         elseif ($_GET['action'] === 'auth') {
-            if (isset($_COOKIE['user_email'], $_COOKIE['user_password'])){
+            if (isset($_COOKIE[UserControllers::$cookie_email], $_COOKIE[UserControllers::$cookie_password])){
                 $user = new UserControllers();
-                $user->auth_by_cookie();
-
-                if(isset($_COOKIE['user_student'])){
-                    header('Location: index.php?action=strudent-home');
-                    exit();
+                if ($user->auth_by_cookie()){
+                    if(isset($_COOKIE[UserControllers::$cookie_stutend_mode])){
+                        header('Location: index.php?action=strudent-home');
+                        exit();
+                    } else {
+                        ## Prof action
+                        header('Location: indexphp?action=prof-home'); # pas encore là
+                        exit();
+                    }
                 } else {
-                    ## Prof action
+                    echo 'user non reconnue';
                 }
-            } else{
-                if (isset($_POST['email']) && $_POST['email'] !== '') {
-                    if (isset($_POST['password']) && $_POST['password'] !== '') {
+            } else {
+                if (!empty($_POST['email'])) {
+                    if (!empty($_POST['password'])) {
                         $user = new UserControllers();
-                        $auth = $user->auth($_POST);
-    
-                        if ($auth) {
+                        if ($user->auth($_POST)) {
                             if (isset($_POST['student']) && $_POST['student'] === 'on') {
                                 header('Location: index.php?action=strudent-home');
                                 exit();
-                            }  
+                            }  else {
+                                header('Location: indexphp?action=prof-home'); # pas encore là
+                                exit();
+                            }
                         } else {
                             echo 'user non reconnue';
                         }  
@@ -91,21 +96,25 @@ try {
             StudentControllers::homepage();
         }
 
+        elseif ($_GET['action'] === 'prof-home') {
+            ProfControllers::homepage();
+        }
+
         else if($_GET['action'] === 'logout') {
             UserControllers::logout();
-            header('Location: index.php');
-            exit();
+            // header('Location: index.php');
+            // exit();
         }
     } else {
         if (isset($_COOKIE['user_email'], $_COOKIE['user_password'])) {
             header('Location: index.php?action=auth');
             exit();
-        } 
-        UserControllers::loginPage();
+        } else {
+            UserControllers::loginPage();
+        }
     }
+} catch(\Exception $e) {
 
-} catch(\Throwable $e) {
-
-    die('Error : '.$e->getMessage());
+    die('Error : '.$e);
 
 }

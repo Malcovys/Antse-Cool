@@ -44,12 +44,6 @@
                       I'm a student
                   </label>
                 </div>
-                <div class="form-check ml-1">
-                  <label class="form-check-label text-muted">
-                    <input type="checkbox" class="form-check-input" name="keep">
-                    Keep me signed in
-                  </label>
-                </div>
                 <div class="mt-4">
                   <button type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">SIGN IN</button>
                 </div>

@@ -24,7 +24,7 @@ class CryptedCookie
         $cookie_name = $this->name;
         $cookie_duration = time() + $this->duration;
         # Encryption
-        $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length(self::$encryption_method));       
+        $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length(self::$encryption_method));    
         $encrypted_data = openssl_encrypt($this->data, self::$encryption_method, self::$encryption_key, 0, $iv);
         # Set cookies
         setcookie($cookie_name, base64_encode($encrypted_data), $cookie_duration);
