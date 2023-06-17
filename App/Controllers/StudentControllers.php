@@ -34,13 +34,6 @@ class StudentControllers
         $name = $studentRepository->getLastName($email);
         return $name;
     }
-
-    protected function getGroup(int $id) {
-        $studentRepository = new StudentRepository();
-        $studentRepository->connection = new DatabaseConnection();
-        $group = $studentRepository->getGroupName($id);
-        return $group;
-    }
     
     public function save(array $infos) {
         $matricul = htmlspecialchars($infos['id']);

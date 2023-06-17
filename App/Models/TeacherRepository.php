@@ -4,15 +4,14 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Lib\DatabaseConnection;
-use App\Models\GroupRepository;
 use App\Models\PasswordRepository;
 
-class StudentRepository
+class TeacherRepository
 {
     public DatabaseConnection $connection;
 
     public function getLastName(string $email){
-        $SQLquery = "SELECT `lastName` FROM `students` WHERE `email` = :email";
+        $SQLquery = "SELECT `lastName` FROM `teachers` WHERE `email` = :email";
         $statement = $this->connection->getConnection()->prepare($SQLquery);
         $statement->execute([
             'email' => $email
@@ -24,7 +23,7 @@ class StudentRepository
     public function auth(array $infos) {
         $password_id = new PasswordRepository;
         $password_id->getID($infos['password']);
-        $SQLquery = "SELECT `email`, `password_id` FROM `students` WHERE `email` = :email AND `password_id` = :password_id";
+        $SQLquery = "SELECT `email`, `password_id` FROM `teachers` WHERE `email` = :email AND `password_id` = :password_id";
         $statement = $this->connection->getConnection()->prepare($SQLquery);
         $statement->execute(([
             'email' => htmlspecialchars($infos['email']),
@@ -34,13 +33,11 @@ class StudentRepository
         return $loggetStudent;
     }
 
-    public function save(Student $student): void {
+    public function save(Teacher $student): void {
         $password = new PasswordRepository;
         $password->save($student->password);
         $password_id = $password->getID($student->password);
-        $goup_id = new GroupRepository;
-        $goup_id->getID($student->group);
-        $SQLquery = "INSERT INTO `students` (`id`, `firstName`, `lastName`, `email`, `group_id`, `promotion`, `password_id`)
+        $SQLquery = "INSERT INTO `teachers` (`id`, `firstName`, `lastName`, `email`, `promotion`, `password_id`)
             VALUES (:id, :fist_name, :last_name, :email, :group_id, :promotion, :password_id)";
         $statement = $this->connection->getConnection()->prepare($SQLquery);
         $statement->execute([   
@@ -48,7 +45,6 @@ class StudentRepository
             'fist_name' => $student->fist_name,
             'last_name' => $student->last_name,
             'email' => $student->email,
-            'group_id' => $goup_id,
             'promotion' => $student->promotion,
             'password_id' => $password_id
         ]);
