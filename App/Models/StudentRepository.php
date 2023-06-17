@@ -22,8 +22,9 @@ class StudentRepository
     }
 
     public function auth(array $infos) {
-        $password_id = new PasswordRepository;
-        $password_id->getID($infos['password']);
+        $password = new PasswordRepository;
+        $password->connection = new DatabaseConnection;
+        $password_id = $password->getID($infos['password']);
         $SQLquery = "SELECT `email`, `password_id` FROM `students` WHERE `email` = :email AND `password_id` = :password_id";
         $statement = $this->connection->getConnection()->prepare($SQLquery);
         $statement->execute(([
@@ -36,6 +37,7 @@ class StudentRepository
 
     public function save(Student $student): void {
         $password = new PasswordRepository;
+        $password->connection = new DatabaseConnection;
         $password->save($student->password);
         $password_id = $password->getID($student->password);
         $goup_id = new GroupRepository;

@@ -12,23 +12,19 @@ class StudentControllers
     ##### Pages #####
     public static function homepage() {
         $email = $_COOKIE[UserControllers::$cookie_email];
-        $lastName = self::getStudentLastName($email);
+        $lastName = self::getLastName($email);
         require('templates/pages/student/homepage.php');
-    }
-    
-    public static function singuppage() {
-        require('templates/pages/singuppage.php');
     }
 
     ##### Trairements #####
-    protected function authStudent(array $infos) {
+    public function auth(array $infos) {
         $studentRepository = new StudentRepository();
         $studentRepository->connection = new DatabaseConnection();
         $loggetStudent = $studentRepository->auth($infos);
         return $loggetStudent;
     }
 
-    public static function getStudentLastName(string $email) {
+    public static function getLastName(string $email) {
         $studentRepository = new StudentRepository();
         $studentRepository->connection = new DatabaseConnection();
         $name = $studentRepository->getLastName($email);

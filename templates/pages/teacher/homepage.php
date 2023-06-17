@@ -8,10 +8,10 @@
       <?php require('templates/pages/partials/_setting-panel.php');?>
       <!-- partial -->
       <!-- partial:partials/_sidebar.php -->
-      <?php require('templates/pages/Profesor/partials/_sidebar.php'); ?>
+      <?php require('templates/pages/teacher/partials/_sidebar.php'); ?>
       <!-- partial -->
       <div class="main-panel">
-        <?php require('templates/pages/Profesor/partials/_dashboar.php');?>             
+        <?php require('templates/pages/teacher/partials/_dashboar.php');?>             
         <?php require('templates/pages/partials/_footer.php'); ?>
         <!-- partial -->
       </div>
@@ -20,6 +20,6 @@
     <!-- page-body-wrapper ends -->
 </div>
 <!-- container-scroller -->
-<?php $content = ob_get_clean(); ?>
-<?php require('templates/pages/homepagelayout.php'); ?>
+<?php  $content = ob_get_clean(); ?>
+<?php require('templates/pages/homepagelayout.php');
 

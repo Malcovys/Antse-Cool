@@ -19,9 +19,12 @@ try {
                             if (!empty($_POST['promotion'])) {
                                 if (!empty($_POST['password'])) {
                                     if (isset($_POST['group']) && $_POST['group'] === 'I am a professor') {
-                                        echo 'Professor!';
+                                        $teacher = new TeacherControllers;
+                                        $teacher->save($_POST);
+                                        header('Location: index.php');
+                                        exit();
                                     } else {
-                                        $student = new UserControllers();
+                                        $student = new StudentControllers();
                                         $student->save($_POST);
                                         header('Location: index.php');
                                         exit();

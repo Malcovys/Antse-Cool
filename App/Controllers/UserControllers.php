@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Controllers\TeacherControllers;
+use App\Controllers\StudentControllers;
 
-class UserControllers extends StudentControllers
+class UserControllers
 {
     public static string $cookie_email = 'user_email';
     public static string $cookie_password = 'user_password';
@@ -15,6 +17,10 @@ class UserControllers extends StudentControllers
         require('templates/pages/loginpage.php');
     }
     
+    public static function singuppage() {
+        require('templates/pages/singuppage.php');
+    }
+
     # OK!
     public static function logout() {
         // setcookie($cookie_name, '', time()-3600);
@@ -34,10 +40,12 @@ class UserControllers extends StudentControllers
         $user_password = $_COOKIE[self::$cookie_password];
         $infos = ['email' => $user_email, 'password' => $user_password];
         if (isset($_COOKIE[self::$cookie_stutend_mode])) {
-            $loggetUser = $this->authStudent($infos);
+            $loggetUser = new StudentControllers;
+            $loggetUser->auth($infos);
         } else {
             #professor
-            //$loggetUser =  authProf($infos);
+            $loggetUser = new TeacherControllers();
+            $loggetUser->auth($infos);
         }
         if (!empty($loggetUser)){
             return 1;
@@ -49,9 +57,12 @@ class UserControllers extends StudentControllers
     public function auth(array $infos) {
         # Student login
         if (isset($infos['student']) && $infos['student'] === 'on') {
-            $loggetUser = $this->authStudent($infos);
+            $loggetUser = new TeacherControllers;
+            $loggetUser->auth($infos);
         } else {  
             # Professor login
+            $loggetUser = new StudentControllers;
+            $loggetUser->auth($infos);
         }
         if (!empty($loggetUser)) {
             # set email cookie
