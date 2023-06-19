@@ -3,8 +3,7 @@
         <div class="col-md-12 grid-margin">
             <div class="row">
                 <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-                    <h3 class="font-weight-bold">Welcom <?= $lastName ?></h3>
-                    <h6 class="font-weight-normal mb-0">Une plateforme pour <span class="text-primary">faciliter</span> la journée des étudiants et son professeur.</h6>
+                    <h3 class="font-weight-bold">Welcom <?= $lastName ?></h3>   
                 </div>
                 <div class="col-12 col-xl-4">
                     <div class="justify-content-end d-flex">
@@ -42,17 +41,18 @@
                 <div class="col-md-6 mb-4 stretch-card transparent">
                     <div class="card card-tale">
                         <div class="card-body">
-                            <p class="mb-4">Mes Etudiants</p>
-                            <p class="fs-30 mb-2">4512</p>
+                            <p class="mb-4">My Students</p>
+                            <p class="fs-30 mb-2"><?= $totaleStudent; ?></p>
+                            <p>In total</p>
                         </div>
                     </div>
                 </div>
             <div class="col-md-6 mb-4 stretch-card transparent">
                 <div class="card card-dark-blue">
                     <div class="card-body">
-                        <p class="mb-4">Mes modules</p>
+                        <p class="mb-4">My Modules</p>
                         <p class="fs-30 mb-2"><?= $totalModules ?></p>
-                        <p>22.00% (30 days)</p>
+                        <p>In total</p>
                     </div>
                 </div>
             </div>
@@ -70,9 +70,9 @@
                 <div class="col-md-6 stretch-card transparent">
                     <div class="card card-light-danger">
                         <div class="card-body">
-                            <p class="mb-4">Cahier de présence</p>
-                            <p class="fs-30 mb-2">47033</p>
-                            <p>0.22(au total)</p>
+                            <p class="mb-4">You have</p>
+                            <p class="fs-30 mb-2"><?= $absentNumberToDay;?></p>
+                            <p>Absence(s)(to day)</p>
                         </div>
                     </div>
                 </div>

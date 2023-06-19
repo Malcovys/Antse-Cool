@@ -47,7 +47,7 @@ class UserControllers
             $loggetUser = new TeacherControllers();
             $loggetUser->auth($infos);
         }
-        if (!empty($loggetUser)){
+        if (isset($loggetUser) && $loggetUser !== ''){
             return 1;
         } else {
             return 0;
@@ -57,15 +57,16 @@ class UserControllers
     public function auth(array $infos) {
         # Student login
         if (isset($infos['student']) && $infos['student'] === 'on') {
-            $loggetUser = new TeacherControllers;
-            $loggetUser->auth($infos);
+            $studentControllers = new StudentControllers;
+            $loggetUser = $studentControllers->auth($infos);
+           
         } else {  
             # Professor login
-            $loggetUser = new StudentControllers;
-            $loggetUser->auth($infos);
+            $teacherControllers = new TeacherControllers;
+            $loggetUser = $teacherControllers->auth($infos);
         }
-        if (!empty($loggetUser)) {
-            # set email cookie
+        if ($loggetUser) {
+            # set email cookie       
             $duration = time() + 3600*24*31;
             $cookie_name = self::$cookie_email;
             $email = htmlspecialchars($infos['email']);

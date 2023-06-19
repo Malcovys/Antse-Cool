@@ -35,13 +35,24 @@ class StudentRepository
         return $loggetStudent;
     }
 
+    public function getIdByGroup($group_id) {
+        $SQLquery = "SELECT `id` FROM `students` WHERE `group_id` = :group_id";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute([
+            'group_id' => $group_id
+        ]);
+        $studentsId = $statement->fetchAll();
+        return $studentsId;
+    }
+
     public function save(Student $student): void {
         $password = new PasswordRepository;
         $password->connection = new DatabaseConnection;
         $password->save($student->password);
         $password_id = $password->getID($student->password);
-        $goup_id = new GroupRepository;
-        $goup_id->getID($student->group);
+        $goupRepository = new GroupRepository;
+        $goupRepository->connection = new DatabaseConnection;
+        $goup_id = $goupRepository->getID($student->group);
         $SQLquery = "INSERT INTO `students` (`id`, `firstName`, `lastName`, `email`, `group_id`, `promotion`, `password_id`)
             VALUES (:id, :fist_name, :last_name, :email, :group_id, :promotion, :password_id)";
         $statement = $this->connection->getConnection()->prepare($SQLquery);
