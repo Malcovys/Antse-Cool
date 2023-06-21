@@ -26,7 +26,7 @@
           <div class="col-lg-5 mx-auto">
             <div class="auth-form-light text-left py-3 px-2 px-sm-5">
               <div class="brand-logo mt-3">
-                <img src="templates/assets/images/logo.svg" alt="logo">
+                <img src="templates/assets/images/Untitled.svg" alt="logo">
               </div>
               <h4>Hello!</h4>
               <h6 class="font-weight-light">New here ? Sing up to continue.</h6>

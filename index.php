@@ -96,6 +96,44 @@ try {
             header('Location: index.php');
             exit();
         }
+        elseif ($_GET['action'] === 'edit-profile') {
+            if(isset($_COOKIE['stutend_mode'])) {
+                StudentControllers::editProfilePage();
+            } else {
+                TeacherControllers::editProfilePage();
+            } 
+        }
+        elseif ($_GET['action'] === 'edit-profile') {
+            if(isset($_COOKIE['stutend_mode'])) {
+                StudentControllers::editProfilePage();
+            } else {
+                TeacherControllers::editProfilePage();
+            } 
+        }
+        elseif ($_GET['action'] === 'update-profile') {
+            if(isset($_COOKIE['stutend_mode'])) {
+                StudentControllers::updateprofile();
+            } else {
+                TeacherControllers::profslistPage();
+            }
+        }
+        elseif ($_GET['action'] === 'students-list') {
+            if(isset($_COOKIE['stutend_mode'])) {
+                StudentControllers::studentslistPage();
+            } else {
+                TeacherControllers::studentslistPage();
+            }
+        }
+        elseif ($_GET['action'] === 'profs-list') {
+            if(isset($_COOKIE['stutend_mode'])) {
+                StudentControllers::profslistPage();
+            } else {
+                TeacherControllers::profslistPage();
+            }
+        }
+        elseif ($_GET['action'] === 'note-gride') {
+            StudentControllers::notegridePage();
+        }
     } else {
         if (isset($_COOKIE['user_email'], $_COOKIE['user_password'])) {
             header('Location: index.php?action=auth');

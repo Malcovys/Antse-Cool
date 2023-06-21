@@ -20,6 +20,16 @@ class TeacherRepository
         return $lastName;
     }
 
+    public function getFirstName(string $email) {
+        $SQLquery = "SELECT `firstName` FROM `teachers` WHERE `email` = :email";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute([
+            'email' => $email
+        ]);
+        $firstName = $statement->fetchColumn();
+        return $firstName;
+    }
+
     public function auth(array $infos) {
         $password = new PasswordRepository;
         $password->connection = new DatabaseConnection;
@@ -32,6 +42,24 @@ class TeacherRepository
         ]));
         $loggetTeacher = $statement->fetch();
         return $loggetTeacher;
+    }
+
+    public function getPhotoDirectory($email) {
+        $SQLquery = "SELECT `photo_dir` FROM `teachers` WHERE `email` = :email";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute([
+            'email' => $email
+        ]);
+        $photo_directory = $statement->fetchColumn();
+        return $photo_directory;
+    }
+
+    public function getTotalTeacher() {
+        $SQLquery = "SELECT COUNT(*) FROM `teachers`";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute();
+        $totalTeacher = $statement->fetchColumn();
+        return $totalTeacher;
     }
 
     public function getID($email){

@@ -21,5 +21,5 @@
 </div>
 <!-- container-scroller -->
 <?php  $content = ob_get_clean(); ?>
-<?php require('templates/pages/homepagelayout.php');
+<?php require('templates/pages/layout.php');
 

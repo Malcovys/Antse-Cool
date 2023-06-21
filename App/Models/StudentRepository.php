@@ -21,6 +21,54 @@ class StudentRepository
         return $lastName;
     }
 
+    public function getFirstName(string $email) {
+        $SQLquery = "SELECT `firstName` FROM `students` WHERE `email` = :email";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute([
+            'email' => $email
+        ]);
+        $firstName = $statement->fetchColumn();
+        return $firstName;
+    }
+
+    public function getPhotoDirectory(string $email) {
+        $SQLquery = "SELECT `photo_dir` FROM `students` WHERE `email` = :email";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute([
+            'email' => $email
+        ]);
+        $photo_directory = $statement->fetchColumn();
+        return $photo_directory;
+    }
+
+    public function getGroupIDByEmail($email) {
+        $SQLquery = "SELECT `group_id` FROM `students` WHERE `email` = :email";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute([
+            'email' => $email
+        ]);
+        $group_id = $statement->fetchColumn();
+        return $group_id;
+    }
+
+    public function getTotalStudent() {
+        $SQLquery = "SELECT COUNT(*) FROM `students` WHERE `state` = 1";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute();
+        $totalStudent = $statement->fetchColumn();
+        return $totalStudent;
+    }
+
+    public function getTotalClassMate($group_id) {
+        $SQLquery = "SELECT COUNT(*) FROM `students` WHERE `group_id` = :group_id";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute([
+            'group_id' => $group_id
+        ]);
+        $totalClassMate = $statement->fetchColumn();
+        return $totalClassMate;
+    }
+
     public function auth(array $infos) {
         $password = new PasswordRepository;
         $password->connection = new DatabaseConnection;
@@ -41,7 +89,17 @@ class StudentRepository
         $statement->execute([
             'group_id' => $group_id
         ]);
-        $studentsId = $statement->fetchAll();
+        $studentsId = $statement->fetchColumn();
+        return $studentsId;
+    }
+
+    public function getId($email) {
+        $SQLquery = "SELECT `id` FROM `students` WHERE `email` = :email";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute([
+            'email' => $email
+        ]);
+        $studentsId = $statement->fetchColumn();
         return $studentsId;
     }
 

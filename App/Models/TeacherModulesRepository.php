@@ -20,18 +20,27 @@ class TeacherModulesRepository
         return $totalModules;
     }
 
+    public function getTeachersIDByGroupID($group_id) {
+        $SQLquery = "SELECT `teacher_id` FROM `teacher_modules` WHERE `group_id` = :group_id";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute([
+            'group_id' => $group_id
+        ]);
+        $data = $statement->fetchAll();
+        $tempArray = Utils::reorganiseArray($data);
+        $teachersId = Utils::removeDuplicates($tempArray);
+        return $teachersId;
+    }
+
     public function getTeacherGoupIDS($teacher_id): array {
         $SQLquery = "SELECT `group_id` FROM `teacher_modules` WHERE `teacher_id` = :teacher_id";
         $statement = $this->connection->getConnection()->prepare($SQLquery);
         $statement->execute([
             'teacher_id' => $teacher_id
         ]);
-        $teacherGroupsID = $statement->fetchAll();
-        $tempArray = array();
-        for ($i = 0; $i < count($teacherGroupsID); $i++) {
-                array_push($tempArray, $teacherGroupsID[$i][0]); 
-        }
-        $finalArray = Utils::removeDuplicates($tempArray);
-        return $finalArray;
+        $data = $statement->fetchAll();
+        $tempArray = Utils::reorganiseArray($data);
+        $teacherGroupsID = Utils::removeDuplicates($tempArray);
+        return $teacherGroupsID;
     }
 }

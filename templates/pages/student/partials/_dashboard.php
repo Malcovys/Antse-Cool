@@ -3,7 +3,7 @@
         <div class="col-md-12 grid-margin">
             <div class="row">
                 <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-                    <h3 class="font-weight-bold">Welcom <?= $lastName;?></h3>
+                    <h3 class="font-weight-bold">Welcome <?= $lastName;?></h3>
                 </div>
                 <div class="col-12 col-xl-4">
                     <div class="justify-content-end d-flex">
@@ -21,13 +21,14 @@
         <div class="col-md-6 grid-margin stretch-card">
             <div class="card tale-bg">
                 <div class="card-people mt-auto">
-                    <img src="templates/assets/images/dashboard/people.svg"" alt="people">
+                    <img src="templates/assets/images/dashboard/people.svg" alt="people">
                     <div class="weather-info">
                         <div class="d-flex">
-                            <div>
-                                <h2 class="mb-0 font-weight-normal"><i class="icon-sun mr-2"></i>14<sup>C</sup></h2>
+                            <div class="d-flex"> 
+                                <img class="bg bg-secondary" src="https://openweathermap.org/img/wn/<?=$weather['icon'];?>.png"/>
+                                <h3 class="mt-2"><?=$weather['temp'];?><sup>C</sup></h3>
                             </div>
-                            <div class="ml-2">
+                            <div class="ml-1">
                                 <h4 class="location font-weight-normal">Antananarivo</h4>
                                 <h6 class="font-weight-normal">Madagascar</h6>
                             </div>
@@ -41,18 +42,18 @@
                 <div class="col-md-6 mb-4 stretch-card transparent">
                     <div class="card card-tale">
                         <div class="card-body">
-                            <p class="mb-4">My classmates</p>
-                            <p class="fs-30 mb-2">40</p>
-                            <p>10.00% (30 days)</p>
+                            <p class="mb-4">My classmate(s)</p>
+                            <p class="fs-30 mb-2"><?= $totalClassMate; ?></p>
+                            <p><?= $totalClassMatePourcent; ?>% (Esti students)</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6 mb-4 stretch-card transparent">
                     <div class="card card-dark-blue">
                         <div class="card-body">
-                            <p class="mb-4">My schedules</p>
-                            <p class="fs-30 mb-2">61344</p>
-                            <p>22.00% (30 days)</p>
+                            <p class="mb-4">My professor(s)</p>
+                            <p class="fs-30 mb-2"><?= $totalTeacher; ?></p>
+                            <p><?= $totalTeacherPourcent; ?>% (Esti Professors)</p>
                         </div>
                     </div>
                 </div>
@@ -61,18 +62,18 @@
                 <div class="col-md-6 mb-4 mb-lg-0 stretch-card transparent">
                     <div class="card card-light-blue">
                         <div class="card-body">
-                            <p class="mb-4">My professors</p>
-                            <p class="fs-30 mb-2">20</p>
-                            <p>2.00% (30 days)</p>
+                            <p class="mb-4">My schedules</p>
+                            <p class="fs-30 mb-2">05</p>
+                            <p>2.00 (cours éffectués)</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6 stretch-card transparent">
                     <div class="card card-light-danger">
                         <div class="card-body">
-                            <p class="mb-4">Number of missing</p>
-                            <p class="fs-30 mb-2">47033</p>
-                            <p>0.22% (30 days)</p>
+                            <p class="mb-4">My Absence(s)</p>
+                            <p class="fs-30 mb-2"><?= $totalAbsence; ?></p>
+                            <p>Since your admission</p>
                         </div>
                     </div>
                 </div>

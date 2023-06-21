@@ -3,7 +3,7 @@
         <div class="col-md-12 grid-margin">
             <div class="row">
                 <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-                    <h3 class="font-weight-bold">Welcom <?= $lastName ?></h3>   
+                    <h3 class="font-weight-bold">Welcome <?= $lastName ?></h3>   
                 </div>
                 <div class="col-12 col-xl-4">
                     <div class="justify-content-end d-flex">
@@ -24,10 +24,11 @@
                     <img src="templates/assets/images/dashboard/people.svg" alt="people">
                     <div class="weather-info">
                         <div class="d-flex">
-                            <div>
-                                <h2 class="mb-0 font-weight-normal"><i class="icon-sun mr-2"></i>30<sup>C</sup></h2>
+                            <div class="d-flex"> 
+                                <img class="bg bg-secondary" src="https://openweathermap.org/img/wn/<?=$weather['icon'];?>.png"/>
+                                <h3 class="mt-2"><?=$weather['temp'];?><sup>C</sup></h3>
                             </div>
-                            <div class="ml-2">
+                            <div class="ml-1">
                                 <h4 class="location font-weight-normal">Antananarivo</h4>
                                 <h6 class="font-weight-normal">Madagascar</h6>
                             </div>
@@ -42,8 +43,8 @@
                     <div class="card card-tale">
                         <div class="card-body">
                             <p class="mb-4">My Students</p>
-                            <p class="fs-30 mb-2"><?= $totaleStudent; ?></p>
-                            <p>In total</p>
+                            <p class="fs-30 mb-2"><?= $totalStudent; ?></p>
+                            <p><?= $totalStudentPourcent; ?>%(Esti students)</p>
                         </div>
                     </div>
                 </div>
@@ -52,7 +53,7 @@
                     <div class="card-body">
                         <p class="mb-4">My Modules</p>
                         <p class="fs-30 mb-2"><?= $totalModules ?></p>
-                        <p>In total</p>
+                        <p><?= $totalEstiModules ?>%(Esti Modules)</p>
                     </div>
                 </div>
             </div>
@@ -61,7 +62,7 @@
                 <div class="col-md-6 mb-4 mb-lg-0 stretch-card transparent">
                     <div class="card card-light-blue">
                         <div class="card-body">
-                            <p class="mb-4">Emploi du temps</p>
+                            <p class="mb-4">My schedules</p>
                             <p class="fs-30 mb-2">05</p>
                             <p>2.00 (cours éffectués)</p>
                         </div>
@@ -72,7 +73,7 @@
                         <div class="card-body">
                             <p class="mb-4">You have</p>
                             <p class="fs-30 mb-2"><?= $absentNumberToDay;?></p>
-                            <p>Absence(s)(to day)</p>
+                            <p>Absent Student(s)(to day)</p>
                         </div>
                     </div>
                 </div>

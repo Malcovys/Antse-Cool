@@ -18,4 +18,14 @@ class AbsenceRegistersRepository
         $absenceNunmberToDay = $statement->fetchColumn();
         return $absenceNunmberToDay;
     }
+
+    public function getStudentTotalAbsence($student_id) {
+        $SQLquery = "SELECT COUNT(*) FROM `absence_registers` WHERE `student_id` = :student_id";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute([
+            'student_id' => $student_id
+        ]);
+        $totalAbsence = $statement->fetchColumn();
+        return $totalAbsence;
+    }
 }
