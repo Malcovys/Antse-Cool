@@ -5,6 +5,9 @@ namespace App\Controllers;
 
 use App\Controllers\TeacherControllers;
 use App\Controllers\StudentControllers;
+use App\Lib\DatabaseConnection;
+use App\Models\StudentRepository;
+use App\Models\TeacherRepository;
 
 class UserControllers
 {
@@ -19,6 +22,34 @@ class UserControllers
     
     public static function singuppage() {
         require('templates/pages/singuppage.php');
+    }
+
+    public static function teacherListPage() {
+        $teacherRepository = new TeacherRepository;
+        $teacherRepository->connection = new DatabaseConnection;
+        $listInfos = $teacherRepository->getTeachers();
+
+        $email = $_COOKIE[UserControllers::$cookie_email];
+        
+        if(isset($_COOKIE['stutend_mode'])) {
+            $photoDir = StudentControllers::getPhotoDirectory($email);
+            require('templates/pages/student/profslistpage.php');
+        } else {
+            $photoDir = TeacherControllers::getPhotoDirectory($email);
+            require('templates/pages/teacher/profslistpage.php');
+        }
+    }
+
+    public static function studentListPage() {
+        $teacherRepository = new StudentRepository;
+        $teacherRepository->connection = new DatabaseConnection;
+        $listInfos = $teacherRepository->getStudents();
+
+        if(isset($_COOKIE['stutend_mode'])) {
+            require('templates/pages/student/profslistpage.php');
+        } else {
+            require('templates/pages/teacher/profslistpage.php');
+        }
     }
 
     # OK!

@@ -31,8 +31,46 @@ class StudentRepository
         return $firstName;
     }
 
+    public function updatePhotoDirectory(string $photoDir, string $id) {
+        $SQLquery = "UPDATE `students` SET `photo_dir` = :photo_dir WHERE `id` = :id";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute([
+            'photo_dir' => $photoDir,
+            'id' => $id
+        ]);
+    }
+
+    public function getStudents() {
+        $SQLquery = "SELECT `students`.`id`, `students`.`firstName`, `students`.`lastName`, `students`.`email`, `groups`.`name` AS `group`, `students`.`promotion`, `students`.`photo_dir`
+                        FROM `students` RIGHT JOIN `groups` ON `students`.`group_id` = `groups`.`id` 
+                        WHERE `students`.`id` IS NOT NULL AND `state` = 1
+                        ORDER BY `students`.`promotion` DESC";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute();
+        $students = $statement->fetchAll();
+        return $students;
+    }
+
+    public function updateFirstName(string $newFirstName, string $id) {
+        $SQLquery = "UPDATE `students` SET `firstName` = :newFirstName WHERE `id` = :id";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute([
+            'newFirstName' => $newFirstName,
+            'id' => $id
+        ]);
+    }
+
+    public function updateLastName(string $newLastName, string $id) {
+        $SQLquery = "UPDATE `students` SET `lastName` = :newLastName WHERE `id` = :id";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute([
+            'newLastName' => $newLastName,
+            'id' => $id
+        ]);
+    }
+
     public function getPhotoDirectory(string $email) {
-        $SQLquery = "SELECT `photo_dir` FROM `students` WHERE `email` = :email";
+        $SQLquery = "SELECT `photo_dir` FROM `students` WHERE `email` = :email AND `state` = 1";
         $statement = $this->connection->getConnection()->prepare($SQLquery);
         $statement->execute([
             'email' => $email
@@ -60,7 +98,7 @@ class StudentRepository
     }
 
     public function getTotalClassMate($group_id) {
-        $SQLquery = "SELECT COUNT(*) FROM `students` WHERE `group_id` = :group_id";
+        $SQLquery = "SELECT COUNT(*) FROM `students` WHERE `group_id` = :group_id AND `state` = 1";
         $statement = $this->connection->getConnection()->prepare($SQLquery);
         $statement->execute([
             'group_id' => $group_id
@@ -84,7 +122,7 @@ class StudentRepository
     }
 
     public function getIdByGroup($group_id) {
-        $SQLquery = "SELECT `id` FROM `students` WHERE `group_id` = :group_id";
+        $SQLquery = "SELECT `id` FROM `students` WHERE `group_id` = :group_id AND `state` = 1";
         $statement = $this->connection->getConnection()->prepare($SQLquery);
         $statement->execute([
             'group_id' => $group_id
@@ -94,7 +132,7 @@ class StudentRepository
     }
 
     public function getId($email) {
-        $SQLquery = "SELECT `id` FROM `students` WHERE `email` = :email";
+        $SQLquery = "SELECT `id` FROM `students` WHERE `email` = :email AND `state` = 1";
         $statement = $this->connection->getConnection()->prepare($SQLquery);
         $statement->execute([
             'email' => $email

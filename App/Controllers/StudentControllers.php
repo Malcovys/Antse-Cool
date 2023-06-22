@@ -10,6 +10,7 @@ use App\Lib\Utils;
 use App\Models\AbsenceRegistersRepository;
 use App\Models\TeacherModulesRepository;
 use App\Models\TeacherRepository;
+use App\Models\GradeRepository;
 
 class StudentControllers
 {
@@ -55,16 +56,21 @@ class StudentControllers
         require('templates/pages/student/editprofilepage.php');
     }
 
-    public static function profslistPage() {
-        require('templates/pages/student/profslistpage.php');
-    }
-
     public static function studentslistPage() {
+        $email = $_COOKIE[UserControllers::$cookie_email];
+        $photoDir = self::getPhotoDirectory($email);
+
+        $listInfos = self::getStudentsList();
         require('templates/pages/student/studentslistpage.php');
     }
 
-    public static function notegridePage() {
-        require('templates/pages/student/notegridepage.php');
+    public static function grideGradePage() {
+        $email = $_COOKIE[UserControllers::$cookie_email];
+        
+        $id = self::getID($email);
+        $grades = self::getGrades($id);
+        $photoDir = self::getPhotoDirectory($email);
+        require('templates/pages/student/gridegradepage.php');
     }
 
     ##### Trairements #####
@@ -74,12 +80,43 @@ class StudentControllers
         $loggetStudent = $studentRepository->auth($infos);
         return $loggetStudent;
     }
-############
-    public static function updateprofile() {
-        if (!empty($_FILES['photo'])){
-            Utils::uploadPhoto($_FILES);
+
+    public static function getGrades(string $id) {
+        $gradeRepository = new GradeRepository;
+        $gradeRepository->connection = new DatabaseConnection;
+        $grades = $gradeRepository->getStudentGrades($id);
+        return $grades;
+    }
+
+    public static function getStudentsList() {
+        $studentRepository = new StudentRepository;
+        $studentRepository->connection = new DatabaseConnection;
+        $studentsList = $studentRepository->getStudents();
+        return $studentsList;
+    }
+
+    public static function getID(string $email) {
+        $studentRepository = new StudentRepository;
+        $studentRepository->connection = new DatabaseConnection;
+        $id = $studentRepository->getID($email);
+        return $id;
+    }
+    
+    public static function updateprofile($infos,$photoInfos) {
+        $email = $_COOKIE[UserControllers::$cookie_email];
+
+        $studentRepository = new StudentRepository;
+        $studentRepository->connection = new DatabaseConnection;
+        
+        $id = $studentRepository->getId($email);
+
+        if ($photoInfos['photo']['size']){
+            $photoDir = Utils::uploadPhoto($photoInfos);
+            $studentRepository->updatePhotoDirectory($photoDir, $id);
         }
 
+        $studentRepository->updateFirstName($infos['firstName'], $id);
+        $studentRepository->updateLastName($infos['lastName'], $id);
     }
 
     public static function getPhotoDirectory(string $email) {

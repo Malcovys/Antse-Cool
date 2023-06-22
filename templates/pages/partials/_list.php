@@ -1,4 +1,4 @@
-<div class="col-lg-12 grid-margin stretch-card">
+<div class="col grid-margin stretch-card overflow-auto">
     <div class="card">
         <div class="card-body">
             <h4 class="card-title"><?= $title; ?></h4>
@@ -21,58 +21,38 @@
                             <th>First name</th>
                             <th>Last name</th>
                             <th>E-mail</th>
+                            <?php 
+                            if($contexte === 'student') { 
+                            ?>
+                                <th>Niveau</th>
+                                <th>Promotion</th>
+                            <?php
+                            }
+                            ?>
                         </tr>
                     </thead>
                     <tbody>
+                        <?php 
+                        foreach($listInfos as $infos){ 
+                        ?>
                         <tr>
-                            <td class="py-1"><img src="../../images/faces/face7.jpg" alt="image"/></td>
-                            <td>1</td>
-                            <td>Herman</td>
-                            <td>Beck</td>
-                            <td>Beck</td>
+                            <td class="py-1"><img src="<?= $infos['photo_dir'];?>" alt="image"/></td>
+                            <td><?= $infos['id'];?></td>
+                            <td><?= $infos['firstName'];?></td>
+                            <td><?= $infos['lastName'];?></td>
+                            <td><?= $infos['email'];?></td>
+                            <?php 
+                            if($contexte === 'student') { 
+                            ?>
+                                <td><?= $infos['group']; ?></td>
+                                <td><?= $infos['promotion']; ?></td>
+                            <?php
+                            }
+                            ?>
                         </tr>
-                        <tr>
-                            <td class="py-1"><img src="../../images/faces/face7.jpg" alt="image"/></td>
-                            <td>1</td>
-                            <td>Herman</td>
-                            <td>Beck</td>
-                            <td>Beck</td>
-                        </tr>
-                        <tr>
-                            <td class="py-1"><img src="../../images/faces/face7.jpg" alt="image"/></td>
-                            <td>1</td>
-                            <td>Herman</td>
-                            <td>Beck</td>
-                            <td>Beck</td>
-                        </tr>
-                        <tr>
-                            <td class="py-1"><img src="../../images/faces/face7.jpg" alt="image"/></td>
-                            <td>1</td>
-                            <td>Herman</td>
-                            <td>Beck</td>
-                            <td>Beck</td>
-                        </tr>
-                        <tr>
-                            <td class="py-1"><img src="../../images/faces/face7.jpg" alt="image"/></td>
-                            <td>1</td>
-                            <td>Herman</td>
-                            <td>Beck</td>
-                            <td>Beck</td>
-                        </tr>
-                        <tr>
-                            <td class="py-1"><img src="../../images/faces/face7.jpg" alt="image"/></td>
-                            <td>1</td>
-                            <td>Herman</td>
-                            <td>Beck</td>
-                            <td>Beck</td>
-                        </tr>
-                        <tr>
-                            <td class="py-1"><img src="../../images/faces/face7.jpg" alt="image"/></td>
-                            <td>1</td>
-                            <td>Herman</td>
-                            <td>Beck</td>
-                            <td>Beck</td>
-                        </tr>
+                        <?php 
+                        } 
+                        ?>
                     </tbody>
                 </table>
             </div>

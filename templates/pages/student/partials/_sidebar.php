@@ -27,14 +27,14 @@
       </div>
       </li>
     <li class="nav-item">
-      <a class="nav-link" data-toggle="collapse" href="#notes" aria-expanded="false" aria-controls="form-elements">
+      <a class="nav-link" data-toggle="collapse" href="#grades" aria-expanded="false" aria-controls="form-elements">
         <i class="icon-columns menu-icon"></i>
-        <span class="menu-title">Notes</span>
+        <span class="menu-title">Grade</span>
         <i class="menu-arrow"></i>
       </a>
-      <div class="collapse" id="notes">
+      <div class="collapse" id="grades">
         <ul class="nav flex-column sub-menu">
-          <li class="nav-item"><a class="nav-link" href="index.php?action=note-gride">My notes</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.php?action=gride-grade">My grades</a></li>
         </ul>
       </div>
     </li>

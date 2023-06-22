@@ -37,7 +37,9 @@ class Utils
             $allowedExtensions = ['jpg', 'jpeg', 'gif', 'png'];
 
             if(in_array($extension, $allowedExtensions)){
-                move_uploaded_file($_FILES['photo']['tmp_name'], 'templates/assets/images/profiles/'.basename($_FILES['photo']['name']));
+                $photoDir = 'templates/assets/images/profiles/'.basename($_FILES['photo']['name']);
+                move_uploaded_file($_FILES['photo']['tmp_name'], $photoDir);
+                return $photoDir;
             }
         }
     }

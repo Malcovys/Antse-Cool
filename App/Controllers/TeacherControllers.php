@@ -49,11 +49,10 @@ class TeacherControllers
         require('templates/pages/teacher/editprofilepage.php');
     }
 
-    public static function profslistPage() {
-        require('templates/pages/teacher/profslistpage.php');
-    }
-
     public static function studentslistPage() {
+        $email = $_COOKIE[UserControllers::$cookie_email];
+        $photoDir = self::getPhotoDirectory($email);
+        $listInfos = StudentControllers::getStudentsList();
         require('templates/pages/teacher/studentslistpage.php');
     }
 
@@ -149,5 +148,22 @@ class TeacherControllers
         $teacherRepository->connection = new DatabaseConnection();
         $loggetTeacher = $teacherRepository->auth($infos);
         return $loggetTeacher;
+    }
+
+    public static function updateprofile($infos, array $photoInfos) {
+        $email = $_COOKIE[UserControllers::$cookie_email];
+
+        $teacherRepository = new TeacherRepository;
+        $teacherRepository->connection = new DatabaseConnection;
+        
+        $id = $teacherRepository->getId($email);
+
+        if ($photoInfos['photo']['size']){
+            $photoDir = Utils::uploadPhoto($photoInfos);
+            $teacherRepository->updatePhotoDirectory($photoDir, $id);
+        }
+
+        $teacherRepository->updateFirstName($infos['firstName'], $id);
+        $teacherRepository->updateLastName($infos['lastName'], $id);
     }
 }

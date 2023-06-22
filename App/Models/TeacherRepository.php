@@ -20,6 +20,41 @@ class TeacherRepository
         return $lastName;
     }
 
+    public function updatePhotoDirectory(string $photoDir, string $id) {
+        $SQLquery = "UPDATE `teachers` SET `photo_dir` = :photo_dir WHERE `id` = :id";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute([
+            'photo_dir' => $photoDir,
+            'id' => $id
+        ]);
+    }
+
+    public function updateFirstName(string $newFirstName, string $id) {
+        $SQLquery = "UPDATE `teachers` SET `firstName` = :newFirstName WHERE `id` = :id";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute([
+            'newFirstName' => $newFirstName,
+            'id' => $id
+        ]);
+    }
+
+    public function getTeachers() {
+        $SQLquery = "SELECT `id`, `firstName`, `lastName`, `email`, `photo_dir` FROM `teachers`";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute();
+        $teachers = $statement->fetchAll();
+        return $teachers;
+    }
+
+    public function updateLastName(string $newLastName, string $id) {
+        $SQLquery = "UPDATE `teachers` SET `lastName` = :newLastName WHERE `id` = :id";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute([
+            'newLastName' => $newLastName,
+            'id' => $id
+        ]);
+    }
+
     public function getFirstName(string $email) {
         $SQLquery = "SELECT `firstName` FROM `teachers` WHERE `email` = :email";
         $statement = $this->connection->getConnection()->prepare($SQLquery);
@@ -63,8 +98,6 @@ class TeacherRepository
     }
 
     public function getID($email){
-        $teacherRepository = new TeacherRepository;
-        $teacherRepository->connection = new DatabaseConnection;
         $SQLquery = "SELECT `id` FROM `teachers` WHERE `email` = :email";
         $statement = $this->connection->getConnection()->prepare($SQLquery);
         $statement->execute([   

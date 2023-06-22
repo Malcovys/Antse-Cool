@@ -11,7 +11,7 @@
       <?php require('templates/pages/student/partials/_sidebar.php'); ?>
       <!-- partial -->
       <div class="main-panel">
-        <?php require('templates/pages/student/partials/_note.php');?>        
+        <?php require('templates/pages/student/partials/_grade.php');?>        
         <?php require('templates/pages/partials/_footer.php'); ?>
         <!-- partial -->
       </div>

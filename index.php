@@ -9,9 +9,12 @@ use App\Controllers\TeacherControllers;
 require_once('App/Autoloader.php');
 \App\Autoloader::register();
 
-try {
-    if (!empty($_GET['action'])) {
-        if ($_GET['action'] === 'singup') {
+try 
+{
+    if (!empty($_GET['action'])) 
+    {
+        if ($_GET['action'] === 'singup') 
+        {
             if (!empty($_POST['first_name'])) {
                 if (!empty($_POST['last_name'])) {
                     if (!empty($_POST['id'])) {
@@ -47,9 +50,13 @@ try {
             } else {
                 throw new \Exception('Your first name please');
             }
-        } elseif ($_GET['action'] === 'create') {
+        } 
+        elseif ($_GET['action'] === 'create') 
+        {
             UserControllers::singuppage();
-        } elseif ($_GET['action'] === 'auth') {
+        }
+        elseif ($_GET['action'] === 'auth') 
+        {
             if (isset($_COOKIE[UserControllers::$cookie_email], $_COOKIE[UserControllers::$cookie_password])) {
                 $user = new UserControllers();
                 if ($user->auth_by_cookie()) {
@@ -87,52 +94,54 @@ try {
                     throw new \Exception('E-mail required');
                 }
             }
-        } elseif ($_GET['action'] === 'student-home') {
+        } 
+        elseif ($_GET['action'] === 'student-home') 
+        {
             StudentControllers::homepage();
-        } elseif ($_GET['action'] === 'prof-home') {
+        } 
+        elseif ($_GET['action'] === 'prof-home') 
+        {
             TeacherControllers::homepage();
-        } elseif ($_GET['action'] === 'logout') {
+        } 
+        elseif ($_GET['action'] === 'logout') 
+        {
             UserControllers::logout();
             header('Location: index.php');
             exit();
         }
-        elseif ($_GET['action'] === 'edit-profile') {
+        elseif ($_GET['action'] === 'edit-profile') 
+        {
             if(isset($_COOKIE['stutend_mode'])) {
                 StudentControllers::editProfilePage();
             } else {
                 TeacherControllers::editProfilePage();
             } 
         }
-        elseif ($_GET['action'] === 'edit-profile') {
-            if(isset($_COOKIE['stutend_mode'])) {
-                StudentControllers::editProfilePage();
-            } else {
-                TeacherControllers::editProfilePage();
-            } 
-        }
-        elseif ($_GET['action'] === 'update-profile') {
-            if(isset($_COOKIE['stutend_mode'])) {
-                StudentControllers::updateprofile();
-            } else {
-                TeacherControllers::profslistPage();
-            }
-        }
-        elseif ($_GET['action'] === 'students-list') {
+        elseif ($_GET['action'] === 'students-list') 
+        {
             if(isset($_COOKIE['stutend_mode'])) {
                 StudentControllers::studentslistPage();
             } else {
                 TeacherControllers::studentslistPage();
             }
         }
-        elseif ($_GET['action'] === 'profs-list') {
+        elseif ($_GET['action'] === 'update-profile') 
+        {
             if(isset($_COOKIE['stutend_mode'])) {
-                StudentControllers::profslistPage();
+                StudentControllers::updateprofile($_POST, $_FILES);
             } else {
-                TeacherControllers::profslistPage();
+                TeacherControllers::updateprofile($_POST, $_FILES);   
             }
+            header('Location: index.php?action=edit-profile');
+            exit();
         }
-        elseif ($_GET['action'] === 'note-gride') {
-            StudentControllers::notegridePage();
+        elseif ($_GET['action'] === 'profs-list') 
+        {
+            UserControllers::teacherListPage();
+        }
+        elseif ($_GET['action'] === 'gride-grade') 
+        {
+            StudentControllers::grideGradePage();
         }
     } else {
         if (isset($_COOKIE['user_email'], $_COOKIE['user_password'])) {
@@ -142,6 +151,8 @@ try {
             UserControllers::loginPage();
         }
     }
-} catch (\Exception $e) {
+} 
+catch (\Exception $e) 
+{
     die('Error: ' . $e);
 }
