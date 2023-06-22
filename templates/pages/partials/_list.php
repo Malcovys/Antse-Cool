@@ -24,7 +24,7 @@
                             <?php 
                             if($contexte === 'student') { 
                             ?>
-                                <th>Niveau</th>
+                                <th>Level</th>
                                 <th>Promotion</th>
                             <?php
                             }

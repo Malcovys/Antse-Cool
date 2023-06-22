@@ -33,7 +33,7 @@
                     </div>
                     <div class="text-right mt-5 mb-1 form-group">
                         <button type="submit" class="btn btn-primary">Save changes</button>&nbsp;
-                        <button class="btn btn-default"><a href="index.php">Cancel</a></button>
+                        <button class="btn btn-default"><a href="index.php?action=profile">Cancel</a></button>
                     </div>
                 </div>
             </form>

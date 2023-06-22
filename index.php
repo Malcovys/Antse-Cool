@@ -143,6 +143,14 @@ try
         {
             StudentControllers::grideGradePage();
         }
+        elseif ($_GET['action'] === 'profile') 
+        {
+            if(isset($_COOKIE['stutend_mode'])) {
+                StudentControllers::profilePage();
+            } else {
+                TeacherControllers::profilePage();
+            } 
+        }
     } else {
         if (isset($_COOKIE['user_email'], $_COOKIE['user_password'])) {
             header('Location: index.php?action=auth');

@@ -73,12 +73,26 @@ class StudentControllers
         require('templates/pages/student/gridegradepage.php');
     }
 
+    public static function profilePage() {
+        $email = $_COOKIE[UserControllers::$cookie_email];
+        $photoDir = self::getPhotoDirectory($email);
+        $infos = self::getMyInfos($email);
+        require('templates/pages/student/profilepage.php');
+    }
+
     ##### Trairements #####
     public function auth(array $infos) {
         $studentRepository = new StudentRepository();
         $studentRepository->connection = new DatabaseConnection();
         $loggetStudent = $studentRepository->auth($infos);
         return $loggetStudent;
+    }
+    
+    public static function getMyInfos($email) {
+        $studentRepository = new StudentRepository;
+        $studentRepository->connection = new DatabaseConnection;
+        $myInfos = $studentRepository->getMyInfos($email);
+        return $myInfos;
     }
 
     public static function getGrades(string $id) {

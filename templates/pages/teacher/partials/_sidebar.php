@@ -27,27 +27,27 @@
             </div>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#notes" aria-expanded="false" aria-controls="notes">
+            <a class="nav-link" data-toggle="collapse" href="#grades" aria-expanded="false" aria-controls="notes">
                 <i class="icon-columns menu-icon"></i>
-                <span class="menu-title">Notes</span>
+                <span class="menu-title">Grade</span>
                 <i class="menu-arrow"></i>
             </a>
-            <div class="collapse" id="notes">
+            <div class="collapse" id="grades">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">Grille de note</a></li>
+                    <li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">Add grade</a></li>
                 </ul>
             </div>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#scheldules" aria-expanded="false" aria-controls="scheldules">
+            <a class="nav-link" data-toggle="collapse" href="#timetable" aria-expanded="false" aria-controls="scheldules">
                 <i class="icon-bar-graph menu-icon"></i>
-                    <span class="menu-title">Schedules</span>
+                    <span class="menu-title">Timetable</span>
                 <i class="menu-arrow"></i>
             </a>
-            <div class="collapse" id="scheldules">
+            <div class="collapse" id="timetable">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="pages/charts/chartjs.html">All schedule</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="pages/charts/chartjs.html">My schedule</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="pages/charts/chartjs.html">My Timetable</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="pages/charts/chartjs.html">ESTI's Timetable</a></li>
                 </ul>
             </div>
         </li>
@@ -59,7 +59,8 @@
             </a>
             <div class="collapse" id="presence">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="pages/tables/basic-table.html">Call</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="pages/tables/basic-table.html">Make presence</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="pages/tables/basic-table.html">Absences</a></li>
                 </ul>
             </div>
         </li>

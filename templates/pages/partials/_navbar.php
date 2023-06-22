@@ -69,9 +69,9 @@
               <img src="<?= $photoDir; ?>" alt="profile"/>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-              <a class="dropdown-item" href="index.php?action=edit-profile">
+              <a class="dropdown-item" href="index.php?action=profile">
                 <i class="icon-head menu-icon text-primary"></i>
-                Edit profile
+                My  profil
               </a>  
               <a class="dropdown-item" href="index.php?action=logout">
                 <i class="ti-power-off text-primary"></i>

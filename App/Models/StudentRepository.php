@@ -40,6 +40,19 @@ class StudentRepository
         ]);
     }
 
+    public function getMyInfos($email) {
+        $SQLquery = "SELECT `students`.`firstName`, `students`.`lastName`, `students`.`id`, `students`.`email`, `students`.`promotion`, `groups`.`name` AS `group`
+                        FROM `students` 
+                        RIGHT JOIN `groups` ON `students`.`group_id` = `groups`.`id`
+                        WHERE `students`.`email` = :email";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute([
+            'email' => $email
+        ]);
+        $myInfos = $statement->fetch();
+        return $myInfos;
+    }
+
     public function getStudents() {
         $SQLquery = "SELECT `students`.`id`, `students`.`firstName`, `students`.`lastName`, `students`.`email`, `groups`.`name` AS `group`, `students`.`promotion`, `students`.`photo_dir`
                         FROM `students` RIGHT JOIN `groups` ON `students`.`group_id` = `groups`.`id` 

@@ -46,6 +46,16 @@ class TeacherRepository
         return $teachers;
     }
 
+    public function getMyInfos($email) {
+        $SQLquery = "SELECT `firstName`, `lastName`, `id`, `email` FROM `teachers` WHERE `email` = :email";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute([
+            'email' => $email
+        ]);
+        $myInfos = $statement->fetch();
+        return $myInfos;
+    }
+
     public function updateLastName(string $newLastName, string $id) {
         $SQLquery = "UPDATE `teachers` SET `lastName` = :newLastName WHERE `id` = :id";
         $statement = $this->connection->getConnection()->prepare($SQLquery);

@@ -56,6 +56,20 @@ class TeacherControllers
         require('templates/pages/teacher/studentslistpage.php');
     }
 
+    public static function profilePage() {
+        $email = $_COOKIE[UserControllers::$cookie_email];
+        $photoDir = self::getPhotoDirectory($email);
+        $infos = self::getMyInfos($email);
+        require('templates/pages/teacher/profilepage.php');
+    }
+
+    public static function getMyInfos($email) {
+        $teacherRepository = new TeacherRepository;
+        $teacherRepository->connection = new DatabaseConnection;
+        $myInfos = $teacherRepository->getMyInfos($email);
+        return $myInfos;
+    }
+
     public static function getPhotoDirectory(string $email) {
         $studentRepository = new TeacherRepository();
         $studentRepository->connection = new DatabaseConnection();
