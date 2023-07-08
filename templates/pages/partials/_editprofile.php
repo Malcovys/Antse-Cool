@@ -7,11 +7,10 @@
                 <div class="col-5">
                     <div class="form-group">
                         <div class="form-col">
-                            <div class="text-center">
-                                <img src="<?= $photoDir ?>" class="avatar img-circle img-thumbnail" alt="avatar">
-                                <div class="mb-3">
-                                <label for="formFileSm" class="form-label">Upload new photo ?</label>
-                                <input class="form-control form-control-sm" id="formFileSm" name="photo" type="file">
+                            <img src="<?= $photoDir ?>" class="avatar img-circle img-thumbnail" alt="avatar">
+                            <div class="input-group mb-3">
+                                <div class="form-group col-lg-12">
+                                    <input class="form-control file-upload-info" name="photo" type="file">
                                 </div>
                             </div>
                         </div>    

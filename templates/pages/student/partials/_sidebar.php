@@ -22,7 +22,7 @@
         <ul class="nav flex-column sub-menu">
           <li class="nav-item"> <a class="nav-link" href="index.php?action=profs-list">Professors</a></li>
           <li class="nav-item"> <a class="nav-link" href="index.php?action=students-list">Students</a></li>
-          <li class="nav-item"> <a class="nav-link" href="index.php?action=modules-list">Modules</a></li>
+          <li class="nav-item"> <a class="nav-link" href="index.php?action=module-list">Modules</a></li>
         </ul>
       </div>
       </li>
@@ -39,15 +39,15 @@
       </div>
     </li>
     <li class="nav-item">
-      <a class="nav-link" data-toggle="collapse" href="#schedules" aria-expanded="false" aria-controls="charts">
-        <i class="icon-bar-graph menu-icon"></i>
-        <span class="menu-title">Schedules</span>
+      <a class="nav-link" data-toggle="collapse" href="#timetable" aria-expanded="false" aria-controls="charts">
+        <i class="ti-calendar menu-icon"></i>
+        <span class="menu-title">Timetable</span>
         <i class="menu-arrow"></i>
       </a>
-      <div class="collapse" id="schedules">
+      <div class="collapse" id="timetable">
           <ul class="nav flex-column sub-menu">
-              <li class="nav-item"> <a class="nav-link" href="pages/charts/chartjs.html">All schedule</a></li>
-              <li class="nav-item"> <a class="nav-link" href="pages/charts/chartjs.html">My schedule</a></li>
+              <li class="nav-item"> <a class="nav-link" href="pages/charts/chartjs.html">My Timetable</a></li>
+              <li class="nav-item"> <a class="nav-link" href="pages/charts/chartjs.html">ESTI's Timetable</a></li>
           </ul>
       </div>
     </li>

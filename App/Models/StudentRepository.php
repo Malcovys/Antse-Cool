@@ -6,6 +6,7 @@ namespace App\Models;
 use App\Lib\DatabaseConnection;
 use App\Models\GroupRepository;
 use App\Models\PasswordRepository;
+use App\Models\TeacherModulesRepository;
 
 class StudentRepository
 {
@@ -19,6 +20,44 @@ class StudentRepository
         ]);
         $lastName = $statement->fetchColumn();
         return $lastName;
+    }
+
+    public function getInfos($id) {
+        $SQLquery = "SELECT `students`.`id`, `students`.`firstName`, `students`.`lastName`, `students`.`email`, `students`.`photo_dir`, `students`.`state`, `groups`.`name` As `group` 
+                        FROM `students` 
+                        RIGHT JOIN `groups` ON `students`.`group_id` = `groups`.`id`
+                        WHERE `students`.`id` = :id";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute([   
+            'id' => $id
+        ]);
+        $infos = $statement->fetchAll();
+        return $infos[0];
+    }
+
+    public function updateInfos($newInfos, $id) {
+        $goupRepository = new GroupRepository();
+        $goupRepository->connection = new DatabaseConnection();
+        $group_id = $goupRepository->getID($newInfos['group']);
+
+        $SQLquery = "UPDATE `students` SET `email` = :newEmail, `state` = :newState, `group_id` = :newGroupID  WHERE `id` = :id";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute([
+            'newEmail' => $newInfos['email'],
+            'newState' => $newInfos['state'],
+            'newGroupID' => $group_id,
+            'id' => $id
+        ]);
+    }
+
+    public function getStudent($id) {
+        $SQLquery = "SELECT `id` FROM `students` WHERE `id` = :id";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute([   
+            'id' => $id
+        ]);
+        $id = $statement->fetchColumn();
+        return $id;
     }
 
     public function getFirstName(string $email) {
@@ -51,6 +90,30 @@ class StudentRepository
         ]);
         $myInfos = $statement->fetch();
         return $myInfos;
+    }
+
+    public function getStudentsInGroupByModule(string $group_id, string $module_id) {
+        $SQLquery = "SELECT `students`.`id`, `students`.`firstName`, `students`.`lastName`, `students`.`photo_dir`, `grades`.`grade` 
+                        FROM `students` 
+                        RIGHT JOIN `grades` ON `students`.`id` = `grades`.`student_id`
+                        WHERE `students`.`group_id` = :group_id AND `grades`.`module_id` = :module_id
+                        ORDER BY `students`.`firstName`";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute([
+            'group_id' => $group_id,
+            'module_id' => $module_id
+        ]);
+        $studentsInGroup = $statement->fetchAll();
+        return $studentsInGroup;
+    }
+
+    public function verifieStudent(string $id) {
+        $SQLquery = "SELECT `id` FROM `students` WHERE `id` = :id";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute([
+            'id' => $id
+        ]);
+        return $statement->fetchColumn();
     }
 
     public function getStudents() {
@@ -158,10 +221,12 @@ class StudentRepository
         $password = new PasswordRepository;
         $password->connection = new DatabaseConnection;
         $password->save($student->password);
+
         $password_id = $password->getID($student->password);
         $goupRepository = new GroupRepository;
         $goupRepository->connection = new DatabaseConnection;
         $goup_id = $goupRepository->getID($student->group);
+
         $SQLquery = "INSERT INTO `students` (`id`, `firstName`, `lastName`, `email`, `group_id`, `promotion`, `password_id`)
             VALUES (:id, :fist_name, :last_name, :email, :group_id, :promotion, :password_id)";
         $statement = $this->connection->getConnection()->prepare($SQLquery);
@@ -174,5 +239,15 @@ class StudentRepository
             'promotion' => $student->promotion,
             'password_id' => $password_id
         ]);
+
+        $teacherModuleRepository = new TeacherModulesRepository;
+        $teacherModuleRepository->connection = new DatabaseConnection;
+        $moudulesInGroup = $teacherModuleRepository->getModulesInGroup($goup_id);
+
+        $gradeRepository = new GradeRepository;
+        $gradeRepository->connection = new DatabaseConnection;
+        foreach($moudulesInGroup as $module) {
+            $gradeRepository->insetDefaultGrades($student->matricul, $module[0]);
+        }
     }
 }

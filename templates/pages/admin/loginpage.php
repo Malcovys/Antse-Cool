@@ -5,7 +5,7 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>An'tse-cool</title>
+  <title>An'tse-cool Admin</title>
   <!-- plugins:css -->
   <link rel="stylesheet" href="templates/assets/vendors/feather/feather.css">
   <link rel="stylesheet" href="templates/assets/vendors/ti-icons/css/themify-icons.css">
@@ -29,26 +29,15 @@
               <div class="brand-logo">
                 <img src="templates/assets/images/Untitled.svg" alt="logo">
               </div>
-              <h4>Hello!</h4>
-              <h6 class="font-weight-light">Sign in to continue.</h6>
-              <form method="post" action="index.php?action=auth">
+              <form method="post" action="index.php?action=admin-auth">
                 <div class="form-group">
-                  <input type="email" class="form-control form-control-lg" name="email" placeholder="E-mail">
+                  <input type="text" class="form-control form-control-lg" name="role" value="Admin">
                 </div>
                 <div class="form-group">
                   <input type="password" class="form-control form-control-lg" name="password" placeholder="Password">
-                </div>  
-                <div class="form-check ml-1">
-                  <label class="form-check-label text-muted mt-5">
-                      <input type="checkbox" class="form-check-input" name="student">
-                      I'm a student
-                  </label>
                 </div>
                 <div class="mt-4">
                   <button type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">SIGN IN</button>
-                </div>
-                <div class="text-center mt-4 font-weight-light">
-                  Connect as <a href="index.php?action=admin" class="text-primary">Admin</a>
                 </div>
               </form>
             </div>

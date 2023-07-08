@@ -68,15 +68,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 stretch-card transparent">
-                    <div class="card card-light-danger">
-                        <div class="card-body">
-                            <p class="mb-4">You have</p>
-                            <p class="fs-30 mb-2"><?= $absentNumberToDay;?></p>
-                            <p>Absent Student(s)(to day)</p>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>

@@ -28,7 +28,7 @@
                         <tr>
                             <td><?= $grade['module_id']?></td>
                             <td><?= $grade['module']?></td>
-                            <td><?= $grade['grade']?></td>
+                            <td><label class="badge badge-info"><?= $grade['grade']?></label></td>
                         </tr>
                     <?php
                     }

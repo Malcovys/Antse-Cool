@@ -25,7 +25,6 @@ class TeacherControllers
         $lastName = self::getLastName($email);
         $photoDir = self::getPhotoDirectory($email);
         $totalStudent = self::getTotalStudent($teacher_id);
-        $absentNumberToDay = self::getAbsentNumberToDay($teacher_id);
 
         $totalModules= self::getTotalModules($teacher_id);
         $totalEstiModules = self::getAllModulesNumber();
@@ -39,6 +38,17 @@ class TeacherControllers
         $weather= Utils::getWeather();        
 
         require('templates/pages/teacher/homepage.php');
+    }
+
+    public static function editGradePage(string $group_name, string $module_id) {
+        $title = $module_id.'-'.$group_name;
+
+        $email = $_COOKIE[UserControllers::$cookie_email];
+        $photoDir = self::getPhotoDirectory($email);
+
+        $listInfos = StudentControllers::getStudentsInGroupByModule($group_name, $module_id);
+
+        require('templates/pages/teacher/editgradepage.php');
     }
 
     public static function editProfilePage() {
@@ -63,11 +73,37 @@ class TeacherControllers
         require('templates/pages/teacher/profilepage.php');
     }
 
+    public static function addgradePage() {
+        $email = $_COOKIE[UserControllers::$cookie_email];
+        $photoDir = self::getPhotoDirectory($email);
+
+        $id = self::getID($email);
+        $myModules = self::geMyModules($id);
+
+        require('templates/pages/teacher/addgrade-page.php');
+    }
+
+    #### Traitements ######
+
+    public static function geMyModules($id) {
+        $teacherRepository = new TeacherModulesRepository;
+        $teacherRepository->connection = new DatabaseConnection;
+        $myModules = $teacherRepository->getMyModules($id);
+        return $myModules;
+    }
+
     public static function getMyInfos($email) {
         $teacherRepository = new TeacherRepository;
         $teacherRepository->connection = new DatabaseConnection;
         $myInfos = $teacherRepository->getMyInfos($email);
         return $myInfos;
+    }
+
+    public static function getID(string $email) {
+        $teacherRepository = new TeacherRepository;
+        $teacherRepository->connection = new DatabaseConnection;
+        $id = $teacherRepository->getID($email);
+        return $id;
     }
 
     public static function getPhotoDirectory(string $email) {
@@ -89,31 +125,6 @@ class TeacherControllers
         $moduleRepository->connection = new DatabaseConnection;
         $allModuleNumber = $moduleRepository->countModules();
         return $allModuleNumber;
-    }
-
-    public static function getAbsentNumberToDay($teacher_id) {
-        $tempArray = array();
-        $studentsIds = array();
-        $absentNumberToDay = 0;
-
-        $groupRepository = new TeacherModulesRepository;
-        $groupRepository->connection = new DatabaseConnection;
-        $teacherGoupIDS = $groupRepository->getTeacherGoupIDS($teacher_id);
-        $studentRepository = new StudentRepository;
-        $studentRepository->connection = new DatabaseConnection;
-
-        foreach($teacherGoupIDS as $tempArray) {
-            $studentId = $studentRepository->getIdByGroup($tempArray);
-            array_push($studentsIds,$studentId);  
-        }
-
-        $absenceRegistersRepository = new AbsenceRegistersRepository;
-        $absenceRegistersRepository->connection = new DatabaseConnection;
-        foreach($studentsIds as $id) {
-            $absentNumberToDay = $absentNumberToDay + $absenceRegistersRepository->getAbsentNumberToDay($id,date("Y-m-d"));
-        }
-
-        return $absentNumberToDay;
     }
 
     public static function getTotalStudent($teacher_id) {
@@ -145,9 +156,9 @@ class TeacherControllers
     }
 
     public function save(array $infos) {
-        $matricul = htmlspecialchars($infos['id']);
-        $first_name = htmlspecialchars($infos['first_name']);
-        $last_name = htmlspecialchars($infos['last_name']);
+        $matricul = htmlspecialchars($infos['matricule']);
+        $first_name = htmlspecialchars($infos['firstName']);
+        $last_name = htmlspecialchars($infos['lastName']);
         $email = htmlspecialchars($infos['email']);
         $promotion = htmlspecialchars($infos['promotion']);
         $password = htmlspecialchars($infos['password']);

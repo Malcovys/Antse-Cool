@@ -14,6 +14,11 @@ class Utils
         return $uniqueArray;
     }
 
+    public static function print_array(array $array) {
+        echo "<pre>";
+        print_r($array);
+    }
+
     public static function reorganiseArray(array $array){
         $tempArray = array();
         for ($i = 0; $i < count($array); $i++) {

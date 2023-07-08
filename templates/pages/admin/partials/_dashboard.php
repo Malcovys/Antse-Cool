@@ -3,7 +3,7 @@
         <div class="col-md-12 grid-margin">
             <div class="row">
                 <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-                    <h3 class="font-weight-bold">Welcome <?= $lastName;?></h3>
+                    <h3 class="font-weight-bold">Antse-cool Admin</h3>
                 </div>
                 <div class="col-12 col-xl-4">
                     <div class="justify-content-end d-flex">
@@ -41,30 +41,27 @@
             <div class="row">
                 <div class="col-md-6 mb-4 stretch-card transparent">
                     <div class="card card-tale">
-                        <div class="card-body">
-                            <p class="mb-4">My classmate(s)</p>
-                            <p class="fs-30 mb-2"><?= $totalClassMate; ?></p>
-                            <p><?= $totalClassMatePourcent; ?>% (Esti students)</p>
-                        </div>
+                    <div class="card-body">
+                        <p class="mb-4">Students'number</p>
+                        <p class="fs-30 mb-2">300</p>
+                    </div>
                     </div>
                 </div>
                 <div class="col-md-6 mb-4 stretch-card transparent">
                     <div class="card card-dark-blue">
-                        <div class="card-body">
-                            <p class="mb-4">My professor(s)</p>
-                            <p class="fs-30 mb-2"><?= $totalTeacher; ?></p>
-                            <p><?= $totalTeacherPourcent; ?>% (Esti Professors)</p>
-                        </div>
+                    <div class="card-body">
+                        <p class="mb-4">Teacher's number</p>
+                        <p class="fs-30 mb-2">20</p>
+                    </div>
                     </div>
                 </div>
             </div>
-                <div class="row">
+            <div class="row">
                 <div class="col-md-6 mb-4 mb-lg-0 stretch-card transparent">
                     <div class="card card-light-blue">
                         <div class="card-body">
-                            <p class="mb-4">My schedules</p>
-                            <p class="fs-30 mb-2">05</p>
-                            <p>2.00 (cours éffectués)</p>
+                            <p class="mb-4">Modules number</p>
+                            <p class="fs-30 mb-2">50</p>
                         </div>
                     </div>
                 </div>

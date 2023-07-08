@@ -8,6 +8,10 @@ use App\Controllers\StudentControllers;
 use App\Lib\DatabaseConnection;
 use App\Models\StudentRepository;
 use App\Models\TeacherRepository;
+use App\Controllers\AdminControllers;
+use App\Lib\Utils;
+use App\Models\ModuleRepository;
+use App\Models\TeacherModulesRepository;
 
 class UserControllers
 {
@@ -20,8 +24,31 @@ class UserControllers
         require('templates/pages/loginpage.php');
     }
     
-    public static function singuppage() {
-        require('templates/pages/singuppage.php');
+    public static function loginAdminpage() {
+        require('templates/pages/admin/loginpage.php');
+    }
+
+    public static function moduleslistPage() {
+        $teacherModulesmoduleRepository = new TeacherModulesRepository();
+        $teacherModulesmoduleRepository->connection = new DatabaseConnection();
+
+        $listModules = $teacherModulesmoduleRepository->getModules();
+        
+        if (isset($_COOKIE[self::$cookie_email], $_COOKIE[self::$cookie_password])){
+            $email = $_COOKIE[UserControllers::$cookie_email];
+
+            if(isset($_COOKIE['stutend_mode'])) {
+                $photoDir = StudentControllers::getPhotoDirectory($email);
+                require('templates/pages/student/moduleslistpage.php');
+            } else {
+                $photoDir = TeacherControllers::getPhotoDirectory($email);
+                require('templates/pages/teacher/moduleslistpage.php');
+            }
+        }
+
+        if (isset($_COOKIE['role'], $_COOKIE['password'])) {
+            require('templates/pages/admin/moduleslistpage.php');
+        }
     }
 
     public static function teacherListPage() {
@@ -34,6 +61,8 @@ class UserControllers
         if(isset($_COOKIE['stutend_mode'])) {
             $photoDir = StudentControllers::getPhotoDirectory($email);
             require('templates/pages/student/profslistpage.php');
+        } elseif (isset($_COOKIE['role']) && $_COOKIE['role'] === 'Admin'){
+            require('templates/pages/admin/profslistpage.php');
         } else {
             $photoDir = TeacherControllers::getPhotoDirectory($email);
             require('templates/pages/teacher/profslistpage.php');
@@ -54,36 +83,67 @@ class UserControllers
 
     # OK!
     public static function logout() {
-        // setcookie($cookie_name, '', time()-3600);
-        $cookiesToDelete = array(self::$cookie_email, self::$cookie_password);
-        foreach ($cookiesToDelete as $cookiesName) {
-            setcookie($cookiesName, '', time()-3600);
-            unset($_COOKIE[$cookiesName]);
+
+        if (isset($_COOKIE[self::$cookie_email])) {
+            $cookiesToDelete = array(self::$cookie_email, self::$cookie_password);
+
+            foreach ($cookiesToDelete as $cookiesName) {
+                setcookie($cookiesName, '', time()-3600);
+                unset($_COOKIE[$cookiesName]);
+            }
+
+            if (isset($_COOKIE[self::$cookie_stutend_mode])) {
+                setcookie(self::$cookie_stutend_mode, '', time()-3600);
+                unset($_COOKIE[self::$cookie_stutend_mode]);
+            }
+
+            return 1;
+        } else {
+            $cookiesToDelete = array('role', 'password');
+
+            foreach ($cookiesToDelete as $cookiesName) {
+                setcookie($cookiesName, '', time()-3600);
+                unset($_COOKIE[$cookiesName]);
+            }
+            return 1;
         }
-        if (isset($_COOKIE[self::$cookie_stutend_mode])) {
-            setcookie(self::$cookie_stutend_mode, '', time()-3600);
-            unset($_COOKIE[self::$cookie_stutend_mode]);
-        }
+
+        return 0;
     }
 
     public function auth_by_cookie() {
-        $user_email = $_COOKIE[self::$cookie_email];
-        $user_password = $_COOKIE[self::$cookie_password];
-        $infos = ['email' => $user_email, 'password' => $user_password];
-        if (isset($_COOKIE[self::$cookie_stutend_mode])) {
-            $loggetUser = new StudentControllers;
-            $loggetUser->auth($infos);
-        } else {
-            #professor
-            $loggetUser = new TeacherControllers();
+        if (isset($_COOKIE[self::$cookie_email], $_COOKIE[self::$cookie_password])){
+
+            $user_email = $_COOKIE[self::$cookie_email];
+            $user_password = $_COOKIE[self::$cookie_password];
+
+            $infos = ['email' => $user_email, 'password' => $user_password];
+
+            if (isset($_COOKIE[self::$cookie_stutend_mode])) {
+
+                $loggetUser = new StudentControllers;
+                $loggetUser->auth($infos);
+
+            } else {
+
+                $loggetUser = new TeacherControllers();
+                $loggetUser->auth($infos);
+            }
+        } elseif (isset($_COOKIE['role']) && $_COOKIE['role'] === 'Admin') {
+
+            $infos = [$_COOKIE['role'], $_COOKIE['password']];
+
+            $loggetUser = new AdminControllers;
             $loggetUser->auth($infos);
         }
+
         if (isset($loggetUser) && $loggetUser !== ''){
             return 1;
         } else {
             return 0;
         }
     }
+
 
     public function auth(array $infos) {
         # Student login

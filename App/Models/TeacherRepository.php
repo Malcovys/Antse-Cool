@@ -56,6 +56,16 @@ class TeacherRepository
         return $myInfos;
     }
 
+    public function updateInfos($newInfos, $id) {
+        $SQLquery = "UPDATE `teachers` SET `email` = :newEmail, `state` = :newState  WHERE `id` = :id";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute([
+            'newEmail' => $newInfos['email'],
+            'newState' => $newInfos['state'],
+            'id' => $id
+        ]);
+    }
+
     public function updateLastName(string $newLastName, string $id) {
         $SQLquery = "UPDATE `teachers` SET `lastName` = :newLastName WHERE `id` = :id";
         $statement = $this->connection->getConnection()->prepare($SQLquery);
@@ -115,6 +125,26 @@ class TeacherRepository
         ]);
         $id = $statement->fetchColumn();
         return $id;
+    }
+
+    public function getTeacher($id) {
+        $SQLquery = "SELECT `id` FROM `teachers` WHERE `id` = :id";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute([   
+            'id' => $id
+        ]);
+        $id = $statement->fetchColumn();
+        return $id;
+    }
+
+    public function getInfos($id) {
+        $SQLquery = "SELECT `id`, `firstName`, `lastName`, `email`, `photo_dir`, `state` FROM `teachers` WHERE `id` = :id";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute([   
+            'id' => $id
+        ]);
+        $infos = $statement->fetchAll();
+        return $infos[0];
     }
 
     public function save(Teacher $tacher): void {

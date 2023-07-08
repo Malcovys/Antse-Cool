@@ -17,6 +17,15 @@ class GroupRepository
         return $group_id;
     }
 
+    public function verifieGroup($group_name) {
+        $SQLquery = "SELECT `name` FROM `groups` WHERE `name` = :group_name";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute([
+            'group_name' => $group_name
+        ]);
+        return $statement->fetch();
+    }
+
     public function getName($groupID): string {
         $SQLquery = "SELECT `name` FROM `groups` WHERE `id` = :group_id";
         $statement = $this->connection->getConnection()->prepare($SQLquery);
@@ -45,5 +54,13 @@ class GroupRepository
         ]);
         $studentID = $statement->fetchColumn();
         return $studentID;
+    }
+
+    public function getGroups() {
+        $SQLquery = "SELECT `name` FROM `groups`";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute();
+        $groups = $statement->fetchAll();
+        return $groups;
     }
 }

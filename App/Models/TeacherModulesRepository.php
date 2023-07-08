@@ -20,6 +20,16 @@ class TeacherModulesRepository
         return $totalModules;
     }
 
+    public function getModulesInGroup($group_id) {
+        $SQLquery = "SELECT `module_id` FROM `teacher_modules` WHERE `group_id` = :group_id";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute([
+            'group_id' => $group_id
+        ]);
+        $modulesInGroup = $statement->fetchAll();
+        return $modulesInGroup;
+    }
+
     public function getTeachersIDByGroupID($group_id) {
         $SQLquery = "SELECT `teacher_id` FROM `teacher_modules` WHERE `group_id` = :group_id";
         $statement = $this->connection->getConnection()->prepare($SQLquery);
@@ -32,6 +42,33 @@ class TeacherModulesRepository
         return $teachersId;
     }
 
+    public function getMyModules(string $id): array {
+        $SQLquery = "SELECT `teacher_modules`.`module_id`, `groups`.`name` AS `group`, `modules`.`name` AS `module`
+                        FROM `teacher_modules`
+                        RIGHT JOIN `groups` 
+                        ON `teacher_modules`.`group_id` = `groups`.`id`
+                        RIGHT JOIN `modules`
+                        ON `teacher_modules`.`module_id` = `modules`.`id`
+                        WHERE `teacher_modules`.`teacher_id` = :teacher_id AND `modules`.`state` = 1
+                        ORDER BY `teacher_modules`.`group_id`";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute([
+            'teacher_id' => $id
+        ]);
+        $myModules = $statement->fetchAll();
+        return $myModules;
+    }
+
+    public function insertTeacherModule($module_id, $teacher_id, $group_id) {
+        $SQLquery = "INSERT INTO `teacher_modules` (`module_id`, `teacher_id`, `group_id`) VALUES (:module_id, :teacher_id, :group_id)";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute([
+            'module_id' => $module_id,
+            'teacher_id' => $teacher_id,
+            'group_id' => $group_id
+        ]);
+    }
+
     public function getTeacherGoupIDS($teacher_id): array {
         $SQLquery = "SELECT `group_id` FROM `teacher_modules` WHERE `teacher_id` = :teacher_id";
         $statement = $this->connection->getConnection()->prepare($SQLquery);
@@ -42,5 +79,32 @@ class TeacherModulesRepository
         $tempArray = Utils::reorganiseArray($data);
         $teacherGroupsID = Utils::removeDuplicates($tempArray);
         return $teacherGroupsID;
+    }
+
+    public function getInfos ($id, $group_id) {
+        $SQLquery = "SELECT `teacher_modules`.`module_id`, `modules`.`name` AS `module_name`, `teachers`.`id` AS `teacherMatricule`, `teachers`.`lastName` AS `teacher`, `groups`.`name` AS `group`, `modules`.`state`
+                        FROM `teacher_modules`
+                        RIGHT JOIN `modules` ON `modules`.`id` = `teacher_modules`.`module_id`
+                        RIGHT JOIN `teachers` ON `teachers`.`id` = `teacher_modules`.`teacher_id`
+                        RIGHT JOIN `groups` ON `groups`.`id` = `teacher_modules`.`group_id`
+                        WHERE `teacher_modules`.`module_id` = :id";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute([
+            'id' => $id
+        ]);
+        $infos = $statement->fetchAll();
+        return $infos[0];
+    }
+
+    public function getModules() {
+        $SQLquery = "SELECT `teacher_modules`.`module_id`, `modules`.`name` AS `module_name`, `teachers`.`lastName` AS `teacher`, `groups`.`name` AS `group`
+                        FROM `teacher_modules`
+                        RIGHT JOIN `modules` ON `modules`.`id` = `teacher_modules`.`module_id`
+                        RIGHT JOIN `teachers` ON `teachers`.`id` = `teacher_modules`.`teacher_id`
+                        RIGHT JOIN `groups` ON `groups`.`id` = `teacher_modules`.`group_id`
+                        WHERE `teacher_modules`.`module_id` IS NOT NULL";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute();
+        return $statement->fetchAll();
     }
 }

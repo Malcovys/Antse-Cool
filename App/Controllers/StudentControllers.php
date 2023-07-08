@@ -11,6 +11,7 @@ use App\Models\AbsenceRegistersRepository;
 use App\Models\TeacherModulesRepository;
 use App\Models\TeacherRepository;
 use App\Models\GradeRepository;
+use App\Models\GroupRepository;
 
 class StudentControllers
 {
@@ -28,10 +29,6 @@ class StudentControllers
         $totalEstiStudents = $studentRepository->getTotalStudent();
         $totalClassMatePourcent = Utils::calculPourCentage($totalClassMate, $totalEstiStudents);
 
-        $student_id = $studentRepository->getId($email);
-        $absenceRegisterRepository = new AbsenceRegistersRepository;
-        $absenceRegisterRepository->connection = new DatabaseConnection();
-        $totalAbsence = $absenceRegisterRepository->getStudentTotalAbsence($student_id);
 
         $teacherModuleRepository = new TeacherModulesRepository;
         $teacherModuleRepository->connection = new DatabaseConnection;
@@ -102,6 +99,27 @@ class StudentControllers
         return $grades;
     }
 
+    public static function verifieStudent(string $id) {
+        $studentRepository = new StudentRepository;
+        $studentRepository->connection = new DatabaseConnection;
+        if($studentRepository->verifieStudent(htmlspecialchars($id))){
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    public static function getStudentsInGroupByModule(string $group_name, string $module_id) {
+        $groupRepository = new GroupRepository;
+        $groupRepository->connection = new DatabaseConnection;
+        $group_id = $groupRepository->getID($group_name);
+
+        $studentRepository = new StudentRepository;
+        $studentRepository->connection = new DatabaseConnection;
+        $studentsInGroup = $studentRepository->getStudentsInGroupByModule($group_id, $module_id);
+        return $studentsInGroup;
+    }
+
     public static function getStudentsList() {
         $studentRepository = new StudentRepository;
         $studentRepository->connection = new DatabaseConnection;
@@ -155,9 +173,9 @@ class StudentControllers
     }
     
     public function save(array $infos) {
-        $matricul = htmlspecialchars($infos['id']);
-        $first_name = htmlspecialchars($infos['first_name']);
-        $last_name = htmlspecialchars($infos['last_name']);
+        $matricul = htmlspecialchars($infos['matricule']);
+        $first_name = htmlspecialchars($infos['firstName']);
+        $last_name = htmlspecialchars($infos['lastName']);
         $email = htmlspecialchars($infos['email']);
         $group = htmlspecialchars($infos['group']);
         $promotion = htmlspecialchars($infos['promotion']);
