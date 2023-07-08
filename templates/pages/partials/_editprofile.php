@@ -19,6 +19,9 @@
                 <div class="col-7">
                     <h3>Personal info</h3>
                     <div class="form-group">
+                        <input class="form-control" name="password_id" type="hidden" value="<?= $password[1]; ?>">
+                    </div>
+                    <div class="form-group">
                         <label class="col-lg-5 control-label">First name:</label>
                         <div class="col-lg-12">
                             <input class="form-control" name="firstName" type="text" value="<?= $firstName; ?>">
@@ -28,6 +31,12 @@
                         <label class="col-lg-5 control-label">Last name:</label>
                         <div class="col-lg-12">
                             <input class="form-control" name="lastName" type="text" value="<?= $lastName; ?>">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-5 control-label">Password:</label>
+                        <div class="col-lg-12">
+                            <input class="form-control" name="password" type="text" value="<?= $password[0]; ?>">
                         </div>
                     </div>
                     <div class="text-right mt-5 mb-1 form-group">

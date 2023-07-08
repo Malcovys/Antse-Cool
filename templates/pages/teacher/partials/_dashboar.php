@@ -63,8 +63,8 @@
                     <div class="card card-light-blue">
                         <div class="card-body">
                             <p class="mb-4">My schedules</p>
-                            <p class="fs-30 mb-2">05</p>
-                            <p>2.00 (cours éffectués)</p>
+                            <p class="fs-30 mb-2"><?= $totaleScheldule; ?></p>
+                            <p>Cours left</p>
                         </div>
                     </div>
                 </div>

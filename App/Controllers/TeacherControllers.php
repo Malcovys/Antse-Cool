@@ -7,11 +7,12 @@ use App\Models\Teacher;
 use App\Models\TeacherRepository;
 use App\Lib\DatabaseConnection;
 use App\Models\TeacherModulesRepository;
-use App\Models\AbsenceRegistersRepository;
 use App\Models\GroupRepository;
 use App\Models\StudentRepository;
 use App\Lib\Utils;
 use App\Models\ModuleRepository;
+use App\Models\SchelduleRepository;
+use App\Models\PasswordRepository;
 
 class TeacherControllers
 {
@@ -34,10 +35,23 @@ class TeacherControllers
         $studentRepository->connection = new DatabaseConnection;
         $totalEstiStudents = $studentRepository->getTotalStudent();
         $totalStudentPourcent = Utils::calculPourCentage($totalStudent, $totalEstiStudents);
+
+        $totaleScheldule = self::getTotaleScheldule($teacher_id);
     
         $weather= Utils::getWeather();        
 
         require('templates/pages/teacher/homepage.php');
+    }
+
+    public static function myTimeTablePage() {
+
+        $email = $_COOKIE[UserControllers::$cookie_email];
+        $photoDir = self::getPhotoDirectory($email);
+
+        $timeTable = self::getTimeTables(self::getID($email));
+        // print_r($timeTable);
+        $title = 'My time table';
+        require('templates/pages/teacher/timetablepage.php');
     }
 
     public static function editGradePage(string $group_name, string $module_id) {
@@ -51,11 +65,45 @@ class TeacherControllers
         require('templates/pages/teacher/editgradepage.php');
     }
 
+    public static function getTotaleScheldule($teacher_id) {
+        $teacher_modules = new TeacherModulesRepository;
+        $teacher_modules->connection = new DatabaseConnection;
+        $teacher_modules_goups_ids = $teacher_modules->getTeacherModules($teacher_id);
+
+        $counter = 0;
+        $schelduleRepository = new SchelduleRepository();
+        $schelduleRepository->connection = new DatabaseConnection();
+        foreach($teacher_modules_goups_ids as $teacherModules){
+            $value = $schelduleRepository->countSchelduleTeacher($teacherModules['group_id'], $teacherModules['module_id']);
+            $counter = $counter + $value;
+        }  
+        return $counter;
+    }
+
+    public static function getTimeTables($teacher_id) {
+        $teacher_modules = new TeacherModulesRepository;
+        $teacher_modules->connection = new DatabaseConnection;
+        $teacher_modules_goups_ids = $teacher_modules->getTeacherModules($teacher_id);
+
+        $timeTables = array();
+        $schelduleRepository = new SchelduleRepository();
+        $schelduleRepository->connection = new DatabaseConnection();
+        foreach($teacher_modules_goups_ids as $teacherModules){
+            $value = $schelduleRepository->countSchelduleTeacher($teacherModules['group_id'], $teacherModules['module_id']);
+            if ($value) {
+                $timeTable = $schelduleRepository->getTeacherTimeTable($teacherModules['group_id'], $teacherModules['module_id']);
+                array_push($timeTables, $timeTable);
+            }
+        }  
+        return $timeTables[0];
+    }
+
     public static function editProfilePage() {
         $email = $_COOKIE[UserControllers::$cookie_email];
         $firstName = self::getFirstName($email);
         $lastName = self::getLastName($email);
         $photoDir = self::getPhotoDirectory($email);
+        $password = self::getPassword($email);
         require('templates/pages/teacher/editprofilepage.php');
     }
 
@@ -84,6 +132,17 @@ class TeacherControllers
     }
 
     #### Traitements ######
+    public static function getPassword($email) {
+        $teacherRepository = new TeacherRepository();
+        $teacherRepository->connection = new DatabaseConnection();
+        $password_id = $teacherRepository->getPasswordID($email);
+        
+        $passwordRepository = new PasswordRepository();
+        $passwordRepository->connection = new DatabaseConnection();
+        $password = $passwordRepository->getPassword($password_id);
+
+        return [$password, $password_id];
+    }
 
     public static function geMyModules($id) {
         $teacherRepository = new TeacherModulesRepository;
@@ -190,5 +249,9 @@ class TeacherControllers
 
         $teacherRepository->updateFirstName($infos['firstName'], $id);
         $teacherRepository->updateLastName($infos['lastName'], $id);
+
+        $passwordRepository = new PasswordRepository();
+        $passwordRepository->connection = new DatabaseConnection();
+        $passwordRepository->update($infos["password"], $infos['password_id']);
     }
 }

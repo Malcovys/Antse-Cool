@@ -9,7 +9,7 @@ class ModuleRepository
     public DatabaseConnection $connection;
 
     public function countModules(){
-        $SQLquery = "SELECT COUNT(*) FROM `modules`";
+        $SQLquery = "SELECT COUNT(*) FROM `modules` WHERE `state` = 1";
         $statement = $this->connection->getConnection()->prepare($SQLquery);
         $statement->execute();
         $totaleModules = $statement->fetchColumn();
@@ -42,13 +42,23 @@ class ModuleRepository
         return $modules;
     }
 
-    // public function getID($name) {
-    //     $SQLquery = "SELECT id FROM modules WHERE name = :name";
-    //     $statement = $this->connection->getConnection()->prepare($SQLquery);
-    //     $statement->execute([   
-    //         "name" => $name
-    //     ]);
-    //     $id = $statement->fetchColumn();
-    //     return $id;
-    // }
+    public function update($name, $state, $id) {
+        $SQLquery = "UPDATE `modules` SET `name` = :newName, `state` = :newState WHERE `id` = :id";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute([
+            'newName' => $name,
+            'newState' => $state,
+            'id' => $id
+        ]);
+    }
+
+    public function getID($name) {
+        $SQLquery = "SELECT id FROM modules WHERE name = :name";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute([   
+            "name" => $name
+        ]);
+        $id = $statement->fetchColumn();
+        return $id;
+    }
 }

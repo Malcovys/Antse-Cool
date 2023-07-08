@@ -46,8 +46,8 @@
             </a>
             <div class="collapse" id="timetable">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="pages/charts/chartjs.html">My Timetable</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="pages/charts/chartjs.html">ESTI's Timetable</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="index.php?action=mytimetable">My Timetable</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="index.php?action=estitimetable">ESTI's Timetable</a></li>
                 </ul>
             </div>
         </li>

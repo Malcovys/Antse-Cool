@@ -116,6 +116,15 @@ class StudentRepository
         return $statement->fetchColumn();
     }
 
+    public function getPasswordID($email) {
+        $SQLquery = "SELECT `password_id` FROM `students` WHERE `email` = :email";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute([
+            'email' => $email
+        ]);
+        return $statement->fetchColumn();
+    }
+
     public function getStudents() {
         $SQLquery = "SELECT `students`.`id`, `students`.`firstName`, `students`.`lastName`, `students`.`email`, `groups`.`name` AS `group`, `students`.`promotion`, `students`.`photo_dir`
                         FROM `students` RIGHT JOIN `groups` ON `students`.`group_id` = `groups`.`id` 

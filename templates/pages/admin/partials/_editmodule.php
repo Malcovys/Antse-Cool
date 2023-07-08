@@ -7,6 +7,9 @@
                 <div class="col-7">
                     <h3>Infos</h3>
                     <div class="form-group">
+                        <input class="form-control" name="module_id" type="hidden" value="<?= $infos['module_id'] ?>">
+                    </div>
+                    <div class="form-group">
                         <label>Name:</label>
                         <div>
                             <input class="form-control" name="name" type="text" value="<?= $infos['module_name'] ?>">

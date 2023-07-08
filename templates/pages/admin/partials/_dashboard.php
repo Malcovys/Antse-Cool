@@ -42,8 +42,8 @@
                 <div class="col-md-6 mb-4 stretch-card transparent">
                     <div class="card card-tale">
                     <div class="card-body">
-                        <p class="mb-4">Students'number</p>
-                        <p class="fs-30 mb-2">300</p>
+                        <p class="mb-4">Student's number</p>
+                        <p class="fs-30 mb-2"><?= $totaleStudent; ?></p>
                     </div>
                     </div>
                 </div>
@@ -51,7 +51,7 @@
                     <div class="card card-dark-blue">
                     <div class="card-body">
                         <p class="mb-4">Teacher's number</p>
-                        <p class="fs-30 mb-2">20</p>
+                        <p class="fs-30 mb-2"><?= $totaleTeacher; ?></p>
                     </div>
                     </div>
                 </div>
@@ -61,7 +61,7 @@
                     <div class="card card-light-blue">
                         <div class="card-body">
                             <p class="mb-4">Modules number</p>
-                            <p class="fs-30 mb-2">50</p>
+                            <p class="fs-30 mb-2"><?= $totaleModule; ?></p>
                         </div>
                     </div>
                 </div>

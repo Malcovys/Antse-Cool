@@ -41,6 +41,18 @@
             </ul>
         </div>
     </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="collapse" href="#timetable" aria-expanded="false" aria-controls="charts">
+        <i class="ti-calendar menu-icon"></i>
+        <span class="menu-title">Timetable</span>
+        <i class="menu-arrow"></i>
+      </a>
+      <div class="collapse" id="timetable">
+          <ul class="nav flex-column sub-menu">
+              <li class="nav-item"> <a class="nav-link" href="index.php?action=estitimetable">Timetables</a></li>
+          </ul>
+      </div>
+    </li>
     
   </ul>
 </nav>

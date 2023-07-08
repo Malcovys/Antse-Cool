@@ -81,6 +81,16 @@ class TeacherModulesRepository
         return $teacherGroupsID;
     }
 
+    public function getTeacherModules($teacher_id) {
+        $SQLquery = "SELECT `group_id`, `module_id`  FROM `teacher_modules` WHERE `teacher_id` = :teacher_id";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute([
+            'teacher_id' => $teacher_id
+        ]);
+        $data = $statement->fetchAll();
+        return $data;
+    }
+
     public function getInfos ($id, $group_id) {
         $SQLquery = "SELECT `teacher_modules`.`module_id`, `modules`.`name` AS `module_name`, `teachers`.`id` AS `teacherMatricule`, `teachers`.`lastName` AS `teacher`, `groups`.`name` AS `group`, `modules`.`state`
                         FROM `teacher_modules`
@@ -96,13 +106,23 @@ class TeacherModulesRepository
         return $infos[0];
     }
 
+    public function update($teacher_id, $module_id) {
+        $SQLquery = "UPDATE `teacher_modules` SET `teacher_id` = :teacher_id WHERE `module_id` = :module_id";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute([
+            'teacher_id'=> $teacher_id,
+            'module_id' => $module_id,
+        ]);
+    }
+
     public function getModules() {
         $SQLquery = "SELECT `teacher_modules`.`module_id`, `modules`.`name` AS `module_name`, `teachers`.`lastName` AS `teacher`, `groups`.`name` AS `group`
                         FROM `teacher_modules`
                         RIGHT JOIN `modules` ON `modules`.`id` = `teacher_modules`.`module_id`
                         RIGHT JOIN `teachers` ON `teachers`.`id` = `teacher_modules`.`teacher_id`
                         RIGHT JOIN `groups` ON `groups`.`id` = `teacher_modules`.`group_id`
-                        WHERE `teacher_modules`.`module_id` IS NOT NULL";
+                        WHERE `teacher_modules`.`module_id` IS NOT NULL
+                        ORDER BY `groups`.`name`";
         $statement = $this->connection->getConnection()->prepare($SQLquery);
         $statement->execute();
         return $statement->fetchAll();

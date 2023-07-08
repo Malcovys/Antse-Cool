@@ -10,10 +10,23 @@ use App\Models\ModuleRepository;
 use App\Models\TeacherRepository;
 use App\Models\StudentRepository;
 use App\Models\TeacherModulesRepository;
+use App\Models\SchelduleRepository;
 
 class AdminControllers {
 
     public static function homepage() {
+
+        $studentRepository = new StudentRepository();
+        $studentRepository->connection = new DatabaseConnection();
+        $totaleStudent = $studentRepository->getTotalStudent();
+
+        $teacherRepository = new TeacherRepository();
+        $teacherRepository->connection = new DatabaseConnection();
+        $totaleTeacher = $teacherRepository->getTotalTeacher();
+
+        $moduleRepository = new ModuleRepository();
+        $moduleRepository->connection = new DatabaseConnection();
+        $totaleModule = $moduleRepository->countModules();
 
         $weather= Utils::getWeather(); 
 
@@ -112,6 +125,25 @@ class AdminControllers {
         }
     }
 
+    public static function insertScheldule(array $infos) {
+        $moduleRepository = new ModuleRepository();
+        $moduleRepository->connection = new DatabaseConnection();
+        $module_id = $moduleRepository->getID($infos['module']);
+
+        $groupRepository = new GroupRepository();
+        $groupRepository->connection = new DatabaseConnection();
+        $group_id = $groupRepository->getID($infos['group']);
+
+        $date = $infos['date'];
+        $begin_at = $infos['begin-hour'];
+        $end_at = $infos['end-hour'];
+
+        $schelduleRepository = new SchelduleRepository();
+        $schelduleRepository->connection = new DatabaseConnection();
+        $schelduleRepository->insertScheldule($module_id, $group_id, $date,$begin_at, $end_at);
+        
+    }
+
     public static function checkModule($id) {
         $moduleRepository = new ModuleRepository();
         $moduleRepository->connection = new DatabaseConnection();
@@ -121,6 +153,22 @@ class AdminControllers {
         } else {
             return 0;
         }
+    }
+
+    public function updateModule($infos){
+        $moduleRepository = new ModuleRepository();
+        $moduleRepository->connection = new DatabaseConnection();
+        $moduleRepository->update($infos['name'], $infos['state'],$infos['module_id']);
+
+        $teacherModuleRepository = new TeacherModulesRepository();
+        $teacherModuleRepository->connection = new DatabaseConnection();
+        $teacherModuleRepository->update($infos['teacherMatricule'],$infos['module_id']);
+    }
+
+    public function removeScheldule($scheldule_id) {
+        $schelduleRepository = new SchelduleRepository();
+        $schelduleRepository->connection = new DatabaseConnection();
+        $schelduleRepository->removeScheldule($scheldule_id);
     }
 
     public function createModule($moduleInfos) {

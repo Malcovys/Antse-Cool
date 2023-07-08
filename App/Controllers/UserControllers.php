@@ -9,8 +9,8 @@ use App\Lib\DatabaseConnection;
 use App\Models\StudentRepository;
 use App\Models\TeacherRepository;
 use App\Controllers\AdminControllers;
-use App\Lib\Utils;
-use App\Models\ModuleRepository;
+use App\Models\GroupRepository;
+use App\Models\SchelduleRepository;
 use App\Models\TeacherModulesRepository;
 
 class UserControllers
@@ -26,6 +26,51 @@ class UserControllers
     
     public static function loginAdminpage() {
         require('templates/pages/admin/loginpage.php');
+    }
+
+    public static function groupListPage() {
+
+        $groupRepository = new GroupRepository();
+        $groupRepository->connection = new DatabaseConnection();
+        $groupList = $groupRepository->getGroups();
+
+        if (isset($_COOKIE[self::$cookie_stutend_mode])){
+            $email = $_COOKIE[self::$cookie_email];
+            $photoDir = StudentControllers::getPhotoDirectory($email);
+            require('templates/pages/student/grouplistpage.php');
+        } elseif(isset($_COOKIE['role']) && $_COOKIE['role'] == 'Admin') {
+            require('templates/pages/admin/grouplistpage.php');
+        } else {
+            $email = $_COOKIE[self::$cookie_email];
+            $photoDir = TeacherControllers::getPhotoDirectory($email);
+            require('templates/pages/teacher/grouplistpage.php');
+        }  
+    }
+
+    public static function timeTableGroup($group_name) {
+        
+        $groupRepository = new GroupRepository();
+        $groupRepository->connection = new DatabaseConnection();
+        $group_id = $groupRepository->getID($group_name);
+
+        $schelduleRepositopry = new SchelduleRepository();
+        $schelduleRepositopry->connection = new DatabaseConnection();
+
+        $timeTable = $schelduleRepositopry->getStudentTimeTable($group_id);
+
+        $title = $group_name.' Time Table';
+
+        if(isset($_COOKIE[self::$cookie_stutend_mode])) {
+            $email = $_COOKIE[self::$cookie_email];
+            $photoDir = StudentControllers::getPhotoDirectory($email);
+            require('templates/pages/student/timetablepage.php');
+        } elseif (isset($_COOKIE['role']) && $_COOKIE['role'] == 'Admin') {
+            require('templates/pages/admin/timetablepage.php');
+        } else {
+            $email = $_COOKIE[self::$cookie_email];
+            $photoDir = TeacherControllers::getPhotoDirectory($email);
+            require('templates/pages/teacher/timetablepage.php');
+        }
     }
 
     public static function moduleslistPage() {

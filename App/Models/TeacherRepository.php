@@ -110,7 +110,7 @@ class TeacherRepository
     }
 
     public function getTotalTeacher() {
-        $SQLquery = "SELECT COUNT(*) FROM `teachers`";
+        $SQLquery = "SELECT COUNT(*) FROM `teachers` WHERE `state` = 1";
         $statement = $this->connection->getConnection()->prepare($SQLquery);
         $statement->execute();
         $totalTeacher = $statement->fetchColumn();
@@ -145,6 +145,16 @@ class TeacherRepository
         ]);
         $infos = $statement->fetchAll();
         return $infos[0];
+    }
+
+    public function getPasswordID($email) {
+        $SQLquery = "SELECT `password_id` FROM `teachers` WHERE `email` = :email";
+        $statement = $this->connection->getConnection()->prepare($SQLquery);
+        $statement->execute([   
+            'email' => $email
+        ]);
+        $id = $statement->fetchColumn();
+        return $id;
     }
 
     public function save(Teacher $tacher): void {

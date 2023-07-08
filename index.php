@@ -9,7 +9,7 @@ use App\Controllers\GroupControllers;
 use App\Controllers\ModuleControllers;
 use App\Controllers\GradeControllers;
 use App\Controllers\AdminControllers;
-use App\Models\AdminRepository;
+use App\Models\Teacher;
 
 require_once('App/Autoloader.php');
 \App\Autoloader::register();
@@ -244,6 +244,17 @@ try
         {
             if (AdminControllers::checkModule($_GET['id'])) {
                 AdminControllers::editmodulePage($_GET['id'], $_GET['group']);
+               
+            }
+        }
+        elseif ($_GET['action'] === 'update-module')
+        {
+            if (AdminControllers::checkModule($_GET['id'])) {
+                $adminController = new AdminControllers();
+                $adminController->updateModule($_POST); 
+                
+                header('Location: index.php?action=edit-module&id='.$_GET['id'].'&group='.$_GET['group']);
+                exit();
             }
         }
         elseif ($_GET['action'] === 'create-student')
@@ -275,6 +286,48 @@ try
         elseif ($_GET['action'] === 'create-scheldule')
         {
             AdminControllers::createScheldulePage();
+        }
+        elseif ($_GET['action'] === 'insert-scheldule')
+        {
+            if (!empty($_POST['date'])) {
+                if (!empty($_POST['begin-hour'])) {
+                    if(!empty($_POST['end-hour'])) {
+                        AdminControllers::insertScheldule($_POST);
+                        header('Location: index.php');
+                        exit();
+                    }
+                }
+            }
+        }
+        elseif ($_GET['action'] === 'mytimetable')
+        {
+            if (isset($_COOKIE['stutend_mode'])) {
+                StudentControllers::myTimeTablePage();
+            } else {
+                TeacherControllers::myTimeTablePage();
+            } 
+        }
+        elseif ($_GET['action'] === 'estitimetable')
+        {
+            UserControllers::groupListPage();
+        }
+        elseif ($_GET['action'] === 'scheldule')
+        {
+            if (!empty($_GET['group'])) {
+                UserControllers::timeTableGroup($_GET['group']);
+            }
+        }
+        elseif ($_GET['action'] === 'delScheldule')
+        {
+            if (isset($_GET['id'], $_COOKIE['role']) &&$_COOKIE['role'] == 'Admin') {
+                if (isset($_GET['group'])) {
+                    $adminController = new AdminControllers();
+                    $adminController->removeScheldule($_GET['id']);
+    
+                    header('Location: index.php?action=scheldule&group='.$_GET['group']);
+                    exit();
+                }
+            }
         }
     } else {
         if (isset($_COOKIE['user_email'], $_COOKIE['user_password'])) {

@@ -7,11 +7,12 @@ use \App\Models\Student;
 use \App\Models\StudentRepository;
 use \App\Controllers\UserControllers;
 use App\Lib\Utils;
-use App\Models\AbsenceRegistersRepository;
 use App\Models\TeacherModulesRepository;
 use App\Models\TeacherRepository;
 use App\Models\GradeRepository;
 use App\Models\GroupRepository;
+use App\Models\PasswordRepository;
+use App\Models\SchelduleRepository;
 
 class StudentControllers
 {
@@ -39,9 +40,29 @@ class StudentControllers
         $totalEstiTeachers = $teacherRepository->getTotalTeacher();
         $totalTeacherPourcent = Utils::calculPourCentage($totalEstiTeachers, $totalTeacher);
 
+        $schelduleRepository = new SchelduleRepository();
+        $schelduleRepository->connection = new DatabaseConnection();
+        $totaleCoursLeft = $schelduleRepository->getTotaleCoursLeft($group_id); 
+
         $weather= Utils::getWeather();
 
         require('templates/pages/student/homepage.php');
+    }
+
+    public static function myTimeTablePage() {
+        $email = $_COOKIE[UserControllers::$cookie_email];
+        $photoDir = self::getPhotoDirectory($email);
+
+        $studentRepository = new StudentRepository();
+        $studentRepository->connection = new DatabaseConnection();
+        $group_id = $studentRepository->getGroupIDByEmail($_COOKIE[UserControllers::$cookie_email]);
+
+        $schelduleRepository = new SchelduleRepository();
+        $schelduleRepository->connection = new DatabaseConnection();
+        $timeTable = $schelduleRepository->getStudentTimeTable($group_id);
+
+        $title = 'My time table';
+        require('templates/pages/student/timetablepage.php');
     }
 
     public static function editProfilePage() {
@@ -49,6 +70,7 @@ class StudentControllers
         $firstName = self::getFirstName($email);
         $lastName = self::getLastName($email);
         $photoDir = self::getPhotoDirectory($email);
+        $password = self::getPassword($email);
 
         require('templates/pages/student/editprofilepage.php');
     }
@@ -78,6 +100,18 @@ class StudentControllers
     }
 
     ##### Trairements #####
+    public static function getPassword($email) {
+        $studentRepository = new StudentRepository();
+        $studentRepository->connection = new DatabaseConnection();
+        $password_id = $studentRepository->getPasswordID($email);
+        
+        $passwordRepository = new PasswordRepository();
+        $passwordRepository->connection = new DatabaseConnection();
+        $password = $passwordRepository->getPassword($password_id);
+
+        return [$password, $password_id];
+    }
+
     public function auth(array $infos) {
         $studentRepository = new StudentRepository();
         $studentRepository->connection = new DatabaseConnection();
@@ -142,6 +176,7 @@ class StudentControllers
         
         $id = $studentRepository->getId($email);
 
+
         if ($photoInfos['photo']['size']){
             $photoDir = Utils::uploadPhoto($photoInfos);
             $studentRepository->updatePhotoDirectory($photoDir, $id);
@@ -149,6 +184,10 @@ class StudentControllers
 
         $studentRepository->updateFirstName($infos['firstName'], $id);
         $studentRepository->updateLastName($infos['lastName'], $id);
+
+        $passwordRepository = new PasswordRepository();
+        $passwordRepository->connection = new DatabaseConnection();
+        $passwordRepository->update($infos["password"], $infos['password_id']);
     }
 
     public static function getPhotoDirectory(string $email) {
