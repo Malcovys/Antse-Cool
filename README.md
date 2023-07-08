@@ -1,6 +1,6 @@
 # Il est important d'avoir la connexion lors de l'utilisation de cette app
 
-# Compte admin permet de  Créer des utilisateurs, des emplois du temps et des modules
+# Compte admin permet de  créer des utilisateurs, des emplois du temps et des modules
 # Le compte admin permet aussi de modifier les modules, les email et states des utilisateurs
 
 # Le compte Admin a pour mdp : admin
